@@ -291,17 +291,19 @@ public class RegistraUsuario extends javax.swing.JFrame {
         }
         if (fecha_nacimiento.getCalendar() != null) {
             long cant_dias_18_anios = 6574;
-           Calendar fecha = fecha_nacimiento.getCalendar();
-           //Convertir calendar en LocalDate
+            Calendar fecha = fecha_nacimiento.getCalendar();
+
+            // Convertir calendar en LocalDate
             LocalDate fecha_nacimiento_usu = LocalDateTime.ofInstant(fecha.toInstant(), fecha.getTimeZone().toZoneId()).toLocalDate(); 
             LocalDate fechaactual = LocalDate.now();
             long diferencia_en_dias = ChronoUnit.DAYS.between(fecha_nacimiento_usu, fechaactual);
-            //si aca me sobran dias es que le falta para llegar a los 18
+
+            // Si aca me sobran dias es que le falta para llegar a los 18
             long calculo = diferencia_en_dias - cant_dias_18_anios;
-            if (calculo > 0){
+            if (calculo < 0) {
                 JOptionPane.showMessageDialog(this, "SOLO SE PERMITEN SUARIOS MAYORES DE EDAD");
+                return;
             }
-            return;
         }
         if (!field_correo.getText().matches(Fabrica.EMAIL_REGEX)) {
             JOptionPane.showMessageDialog(this, "El correo no tiene un formato válido");
