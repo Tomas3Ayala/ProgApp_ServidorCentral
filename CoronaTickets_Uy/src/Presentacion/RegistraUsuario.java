@@ -5,7 +5,11 @@
  */
 package Presentacion;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Calendar;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import logica.Fabrica;
@@ -283,6 +287,20 @@ public class RegistraUsuario extends javax.swing.JFrame {
         }
         if (fecha_nacimiento.getCalendar() == null) {
             JOptionPane.showMessageDialog(this, "La fecha de nacimiento no tiene un formato válido");
+            return;
+        }
+        if (fecha_nacimiento.getCalendar() != null) {
+            long cant_dias_18_anios = 6574;
+           Calendar fecha = fecha_nacimiento.getCalendar();
+           //Convertir calendar en LocalDate
+            LocalDate fecha_nacimiento_usu = LocalDateTime.ofInstant(fecha.toInstant(), fecha.getTimeZone().toZoneId()).toLocalDate(); 
+            LocalDate fechaactual = LocalDate.now();
+            long diferencia_en_dias = ChronoUnit.DAYS.between(fecha_nacimiento_usu, fechaactual);
+            //si aca me sobran dias es que le falta para llegar a los 18
+            long calculo = diferencia_en_dias - cant_dias_18_anios;
+            if (calculo > 0){
+                JOptionPane.showMessageDialog(this, "SOLO SE PERMITEN SUARIOS MAYORES DE EDAD");
+            }
             return;
         }
         if (!field_correo.getText().matches(Fabrica.EMAIL_REGEX)) {
