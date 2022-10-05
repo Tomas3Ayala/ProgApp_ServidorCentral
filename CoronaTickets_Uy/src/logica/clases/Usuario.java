@@ -9,14 +9,24 @@ public abstract class Usuario {
     private String correo;
     private Date nacimiento;
     private int id;
+    private String contrasenia;
 
-    public Usuario(String nickname, String nombre, String apellido, String correo, Date nacimiento, int id) {
+    public Usuario(String nickname, String nombre, String apellido, String correo, Date nacimiento, int id, String contrasenia) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.nacimiento = nacimiento;
         this.id = id;
+        this.contrasenia = contrasenia;
+    }
+
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 
     public String getNickname() {

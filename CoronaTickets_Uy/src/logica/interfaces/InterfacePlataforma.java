@@ -8,6 +8,7 @@ package logica.interfaces;
 import java.sql.Date;
 import java.util.ArrayList;
 import logica.clases.Artista;
+import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Funcion;
 import logica.clases.Paquete;
@@ -20,9 +21,11 @@ import logica.clases.Plataforma;
 public interface InterfacePlataforma {
     boolean crear_Espectaculo(Espectaculo espectaculo);
     ArrayList<Artista> obtener_artistas_disponibles();
+    ArrayList<Categoria> obtener_categorias();
     int ExtraerIdDeCombo (String combo);
     int ExtraeridPaquete (String nompaquete);
    
+    boolean Alta_Categoria (Categoria c);
     boolean Alta_de_Funcion (Funcion f );
     boolean Alta_Plataforma (Plataforma p );
     boolean Agregar_espectaculo_a_paquete (int idEspectaculo, String nomPaquete );

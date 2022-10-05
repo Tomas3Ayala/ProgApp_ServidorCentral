@@ -81,15 +81,17 @@ public class ControllerUsuario implements InterfaceUsuario{
     }
     
     @Override
-    public int registrar_usuario(Usuario usuario) {
+    public int registrar_usuario(Usuario usuario, byte[] imagen) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `usuario` (`nickname`, `nombre`, `apellido`, `correo`, `nacimiento`) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `usuario` (`nickname`, `nombre`, `apellido`, `correo`, `nacimiento`, `contrasenia`, `imagen`) VALUES (?, ?, ?, ?, ?, ?, ?)");
             query.setString(1, usuario.getNickname());
             query.setString(2, usuario.getNombre());
             query.setString(3, usuario.getApellido());
             query.setString(4, usuario.getCorreo());
             query.setDate(5, new java.sql.Date(usuario.getNacimiento().getTime()));
+            query.setString(6, usuario.getContrasenia());
+            query.setBytes(7, imagen);
             query.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,9 +112,9 @@ public class ControllerUsuario implements InterfaceUsuario{
     }
 
     @Override
-    public void registrar_artista(Artista artista) {
+    public void registrar_artista(Artista artista, byte[] imagen) {
         Connection conn = ConexionDB.getInstance().getConnection();
-        int id_usuario = registrar_usuario(artista);
+        int id_usuario = registrar_usuario(artista, imagen);
         try {
             PreparedStatement query = conn.prepareStatement("INSERT INTO `artista` (`descripcion`, `biografia`, `sitio_web`, `id`) VALUES (?, ?, ?, ?)");
             query.setString(1, artista.getDescripcion());
@@ -126,9 +128,9 @@ public class ControllerUsuario implements InterfaceUsuario{
     }
 
     @Override
-    public void registrar_espectador(Espectador espectador) {
+    public void registrar_espectador(Espectador espectador, byte[] imagen) {
         Connection conn = ConexionDB.getInstance().getConnection();
-        int id_usuario = registrar_usuario(espectador);
+        int id_usuario = registrar_usuario(espectador, imagen);
         try {
             PreparedStatement query = conn.prepareStatement("INSERT INTO `espectador` (`id`) VALUES (?)");
             query.setInt(1, id_usuario);
@@ -199,7 +201,8 @@ public class ControllerUsuario implements InterfaceUsuario{
                 usuarios_set.getString("apellido"),
                 usuarios_set.getString("correo"),
                 usuarios_set.getDate("nacimiento"),
-                usuarios_set.getInt("id")
+                usuarios_set.getInt("id"),
+                usuarios_set.getString("contrasenia")
             );
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
@@ -226,7 +229,8 @@ public class ControllerUsuario implements InterfaceUsuario{
                 usuarios_set.getString("apellido"),
                 usuarios_set.getString("correo"),
                 usuarios_set.getDate("nacimiento"),
-                usuarios_set.getInt("id")
+                usuarios_set.getInt("id"),
+                usuarios_set.getString("contrasenia")
             );
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);

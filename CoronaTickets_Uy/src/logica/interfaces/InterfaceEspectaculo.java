@@ -1,6 +1,7 @@
 package logica.interfaces;
 
 import java.util.ArrayList;
+import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
 import logica.clases.Funcion;
@@ -12,6 +13,9 @@ public interface InterfaceEspectaculo {
     ArrayList<String> obtener_plataformas_disponibles();
     ArrayList<Espectaculo> obtener_espectaculos_con_plataforma(String plataforma);
     ArrayList<Funcion> obtener_funciones_de_espectaculo(int id);
+    ArrayList<Espectaculo> obtener_espectaculos_ingresados();
+
+    
 
     ArrayList<Espectador> obtener_espectadores();
     ArrayList<Registro_funcion> obtener_registros_de_espectador(int id);
@@ -23,6 +27,7 @@ public interface InterfaceEspectaculo {
     ArrayList<Funcion> obtener_funciones_de_espectaculo_no_llenas(int id);
     ArrayList<Espectador> obtener_espectadores_no_registrados_en_funcion(int id_funcion);
     void canjear_registro(int id_funcion, int id_espectador);
+    
     
     Boolean registrar_paquete(Paquete paquete);
     

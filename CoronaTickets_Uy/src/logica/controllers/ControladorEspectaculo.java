@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
 import logica.clases.Funcion;
@@ -115,7 +116,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectadores_set.getString("apellido"),
                         espectadores_set.getString("correo"),
                         espectadores_set.getDate("nacimiento"),
-                        espectadores_set.getInt("id")
+                        espectadores_set.getInt("id"),
+                        espectadores_set.getString("contrasenia")
                 ));
             }
         } catch (SQLException ex) {
@@ -148,7 +150,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
     
     @Override
     public Espectador obtener_espectador_de_nickname(String nick) { // esto funciona porque el nickname es unico
-        Espectador espectador = new Espectador("ERROR", "ERROR", "ERROR", "ERROR", new Date(), -1);
+        Espectador espectador = new Espectador("ERROR", "ERROR", "ERROR", "ERROR", new Date(), -1, null);
         Connection conn = ConexionDB.getInstance().getConnection();
 
         try {
@@ -161,7 +163,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectadores_set.getString("apellido"),
                         espectadores_set.getString("correo"),
                         espectadores_set.getDate("nacimiento"),
-                        espectadores_set.getInt("id")
+                        espectadores_set.getInt("id"),
+                        espectadores_set.getString("contrasenia")
                 );
             }
         } catch (SQLException ex) {
@@ -282,7 +285,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectadores_set.getString("apellido"),
                         espectadores_set.getString("correo"),
                         espectadores_set.getDate("nacimiento"),
-                        espectadores_set.getInt("id")
+                        espectadores_set.getInt("id"),
+                        espectadores_set.getString("contrasenia")
                 ));
             }
         } catch (SQLException ex) {
@@ -370,4 +374,26 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
         }
         return false;
     }
+
+    @Override
+    public ArrayList<Espectaculo> obtener_espectaculos_ingresados() {
+         ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.nombre, e.id FROM espectaculo as e where e.estado = 'Ingresado'");
+            ResultSet espectaculos_set = query.executeQuery();
+            while (espectaculos_set.next()) 
+                
+                espectaculos.add(new Espectaculo(
+                        espectaculos_set.getString("nombre"),
+                        espectaculos_set.getInt("id")        
+                ));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return espectaculos;
+    }
+
 }

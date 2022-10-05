@@ -38,6 +38,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menu_inicio = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         menu_registros = new javax.swing.JMenu();
         reg_usuario = new javax.swing.JMenuItem();
         editar_perfil_usuario = new javax.swing.JMenuItem();
@@ -47,6 +48,7 @@ public class Menu extends javax.swing.JFrame {
         reg_paquete1 = new javax.swing.JMenuItem();
         reg_Plataforma = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         menu_consultas = new javax.swing.JMenu();
         consulta_de_usuario = new javax.swing.JMenuItem();
         consulta_funcion_de_espectaculo = new javax.swing.JMenuItem();
@@ -81,6 +83,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menu_inicio.add(salir);
+
+        jMenuItem4.setText("Aceptar/Rechazar espectaculo");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        menu_inicio.add(jMenuItem4);
 
         jMenuBar1.add(menu_inicio);
 
@@ -149,6 +159,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menu_registros.add(jMenuItem2);
+
+        jMenuItem3.setText("Alta Categoria");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        menu_registros.add(jMenuItem3);
 
         jMenuBar1.add(menu_registros);
 
@@ -302,6 +320,17 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Alta_Categoria altacategoria = new Alta_Categoria();
+        altacategoria.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        Aceptar_Rechazar_Espectaculo ventana = new Aceptar_Rechazar_Espectaculo();
+        ventana.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -351,6 +380,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenu menu_consultas;
     private javax.swing.JMenu menu_inicio;

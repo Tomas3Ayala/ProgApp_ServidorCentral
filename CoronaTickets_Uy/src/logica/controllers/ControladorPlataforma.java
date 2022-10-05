@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import logica.clases.Artista;
+import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Funcion;
 import logica.clases.Paquete;
@@ -33,6 +34,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
             instance = new ControladorPlataforma();
         return instance;
     }
+    
     @Override
     public boolean crear_Espectaculo(Espectaculo espectaculo) {
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -175,7 +177,8 @@ public class ControladorPlataforma implements InterfacePlataforma {
                             artista_set.getString("apellido"),
                             artista_set.getString("correo"),
                             artista_set.getDate("nacimiento"),
-                            artista_set.getInt("id")    
+                            artista_set.getInt("id"),
+                            artista_set.getString("contrasenia")
                     );
                 artistas.add(artis);
             }   
@@ -439,4 +442,48 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
         return funcion;
     }
+
+    @Override
+    public ArrayList<Categoria> obtener_categorias() {
+        ArrayList<Categoria> categorias = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM categoria");
+            ResultSet categoria_set = query.executeQuery();
+            while (categoria_set.next()) 
+                
+                categorias.add(new Categoria(categoria_set.getString("nombre"),categoria_set.getInt("id")));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return categorias;
+    }
+    
+    @Override
+    public boolean Alta_Categoria(Categoria c) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `categoria` (`nombre`) VALUES (?)");
+            query.setString(1, c.getNombre());
+            
+
+            query.executeUpdate();
+
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 1062) { // 1062 es un error de dato unico duplicado 
+
+                return false;
+            } else {
+                Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return true;
+    }
+
 }
+    
+
+
+

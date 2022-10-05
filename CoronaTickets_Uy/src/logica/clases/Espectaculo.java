@@ -28,6 +28,7 @@ public class Espectaculo {
         this.id = id;
         this.id_artista = id_artista;
     }
+    
     public Espectaculo(String plataforma, String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id_artista) {
         this.plataforma = plataforma;
         this.nombre = nombre;
@@ -40,6 +41,13 @@ public class Espectaculo {
         this.fecha_registro = fecha_registro;
         this.id_artista = id_artista;
     }
+   public Espectaculo(String nombre,int id) {
+       
+        this.nombre = nombre;
+        this.id = id;
+       
+    }
+    
 
     public String getPlataforma() {
         return plataforma;

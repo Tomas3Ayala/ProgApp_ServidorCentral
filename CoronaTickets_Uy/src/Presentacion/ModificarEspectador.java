@@ -172,7 +172,7 @@ public class ModificarEspectador extends javax.swing.JFrame {
             return;
         }
 
-        Espectador espectador = new Espectador(field_nickname.getText(), field_nombre.getText(), field_apellido.getText(), field_correo.getText(), fecha_nacimiento.getCalendar().getTime(), -1);
+        Espectador espectador = new Espectador(field_nickname.getText(), field_nombre.getText(), field_apellido.getText(), field_correo.getText(), fecha_nacimiento.getCalendar().getTime(), -1, null);
         Fabrica.getInstance().getInstanceControllerUsuario().modificar_espectador(id, espectador);
         JOptionPane.showMessageDialog(this, "Se ha modificado con exito el espectador");
     }//GEN-LAST:event_button_registrarActionPerformed

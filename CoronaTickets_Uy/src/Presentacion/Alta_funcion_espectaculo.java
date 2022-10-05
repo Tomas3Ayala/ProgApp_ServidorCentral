@@ -25,7 +25,7 @@ import logica.interfaces.InterfacePlataforma;
  */
 public class Alta_funcion_espectaculo extends javax.swing.JFrame {
     ArrayList<String> listaArtistas = new ArrayList<>();
-     ArrayList<String> listaEspectaculos = new ArrayList<>();
+    ArrayList<String> listaEspectaculos = new ArrayList<>();
 
     private InterfacePlataforma ICU;
     DefaultListModel artistas = new DefaultListModel();

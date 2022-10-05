@@ -7,14 +7,14 @@ public class Artista extends Usuario {
     private String biografia;
     private String sitio_web;
 
-    public Artista(String descripcion, String biografia, String sitio_web, String nickname, String nombre, String apellido, String correo, Date nacimiento, int id) {
-        super(nickname, nombre, apellido, correo, nacimiento, id);
+    public Artista(String descripcion, String biografia, String sitio_web, String nickname, String nombre, String apellido, String correo, Date nacimiento, int id, String contrasenia) {
+        super(nickname, nombre, apellido, correo, nacimiento, id, contrasenia);
         this.descripcion = descripcion;
         this.biografia = biografia;
         this.sitio_web = sitio_web;
     }
-     public Artista(String descripcion, String nickname, String nombre, String apellido, String correo, Date nacimiento, int id) {
-        super(nickname, nombre, apellido, correo, nacimiento, id);
+     public Artista(String descripcion, String nickname, String nombre, String apellido, String correo, Date nacimiento, int id, String contrasenia) {
+        super(nickname, nombre, apellido, correo, nacimiento, id, contrasenia);
         this.descripcion = descripcion;
         
     }

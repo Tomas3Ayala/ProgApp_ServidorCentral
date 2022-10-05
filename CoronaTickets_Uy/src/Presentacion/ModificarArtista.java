@@ -225,7 +225,7 @@ public class ModificarArtista extends javax.swing.JFrame {
             return;
         }
 
-        Artista artista = new Artista(field_descripcion.getText(), field_biografia.getText(), field_sitio_web.getText(), field_nickname.getText(), field_nombre.getText(), field_apellido.getText(), field_correo.getText(), fecha_nacimiento.getCalendar().getTime(), -1);
+        Artista artista = new Artista(field_descripcion.getText(), field_biografia.getText(), field_sitio_web.getText(), field_nickname.getText(), field_nombre.getText(), field_apellido.getText(), field_correo.getText(), fecha_nacimiento.getCalendar().getTime(), -1, null);
         Fabrica.getInstance().getInstanceControllerUsuario().modificar_artista(id, artista);
         JOptionPane.showMessageDialog(this, "Se ha modificado con exito el artista");
     }//GEN-LAST:event_button_registrarActionPerformed
