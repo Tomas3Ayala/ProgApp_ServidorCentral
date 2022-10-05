@@ -13,30 +13,31 @@ import java.util.logging.Logger;
 
 public class ConexionDB {
     public static Properties getProperties() {
-        FileInputStream in = null;
         try {
-            Properties defaultProps = new Properties();
-            in = new FileInputStream("../config.properties");
-            try {
-                defaultProps.load(in);
-            } catch (IOException ex) {
-                Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return defaultProps;
+            FileInputStream file = new FileInputStream("../config.properties");
+            Properties prop = new Properties();
+            prop.load(file);
+            return prop;
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
             try {
-                in.close();
-            } catch (IOException ex) {
+                FileInputStream file = new FileInputStream(System.getProperty("user.home") + "\\Documents\\GitHub\\ProgApp_ServidorCentral\\config.properties");
+                Properties prop = new Properties();
+                prop.load(file);
+                return prop;
+            } catch (FileNotFoundException ex2) {
+                Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex2) {
                 Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return new Properties();
     }
     
     public static final Properties properties = getProperties();
-    
+//    
     public static final String host = properties.getProperty("host");
     public static final String port = properties.getProperty("port");
     public static final String db = properties.getProperty("db");
