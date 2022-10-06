@@ -269,6 +269,21 @@ public class ControllerUsuario implements InterfaceUsuario{
     }
     
     @Override
+    public boolean existe_nickname_de_usuario(String nickname) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE nickname=?");
+            query.setString(1, nickname);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    @Override
     public ArrayList<Funcion> obtener_funciones_a_las_que_se_registro_espectador(int id) {
         ArrayList<Funcion> funciones = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
