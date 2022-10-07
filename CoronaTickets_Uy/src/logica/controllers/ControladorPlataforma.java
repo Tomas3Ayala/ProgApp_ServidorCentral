@@ -51,7 +51,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
          
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
@@ -62,6 +62,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
             query.setDate(8, (Date) espectaculo.getFecha_registro());
             query.setInt(9, espectaculo.getId_artista());
             query.setInt(10, id_Plataforma);
+            query.setString(11, espectaculo.getEstado().toString());
             
             
             query.executeUpdate();
@@ -460,6 +461,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
 
         return categorias;
     }
+    
     
     @Override
     public boolean Alta_Categoria(Categoria c) {

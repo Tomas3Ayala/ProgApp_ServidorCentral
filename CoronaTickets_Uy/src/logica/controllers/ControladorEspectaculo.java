@@ -380,7 +380,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
          ArrayList<Espectaculo> espectaculos = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT e.nombre, e.id FROM espectaculo as e where e.estado = 'Ingresado'");
+            PreparedStatement query = conn.prepareStatement("SELECT e.nombre, e.id FROM espectaculo as e where e.estado = 'INGRESADO'");
             ResultSet espectaculos_set = query.executeQuery();
             while (espectaculos_set.next()) 
                 
@@ -395,5 +395,30 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
 
         return espectaculos;
     }
+
+    @Override
+    public boolean aceptar_espectaculo(int id) {
+ Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("UPDATE espectaculo SET estado = 'ACEPTADO' WHERE espectaculo.id = " + id + "");
+            query.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean rechazar_espectaculo(int id) {
+Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("UPDATE espectaculo SET estado = 'RECHAZADO' WHERE espectaculo.id = " + id + "");
+            query.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }    }
 
 }

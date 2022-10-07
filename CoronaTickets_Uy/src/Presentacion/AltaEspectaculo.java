@@ -22,6 +22,8 @@ import java.sql.Date;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import logica.clases.Categoria;
+import logica.enums.EstadoEspectaculo;
 
 import logica.interfaces.InterfaceEspectaculo;
 import logica.interfaces.InterfacePlataforma;
@@ -53,6 +55,13 @@ private InterfacePlataforma ICU;
         plataformas.forEach((plataforma) -> {
             combobox_plataformas.addItem(plataforma);
         });
+        
+        ArrayList<Categoria> categorias = Fabrica.getInstance().getInstanceControladorPlataforma().obtener_categorias();
+
+        categorias.forEach((categoria) -> {
+            comboCategoria.addItem(categoria.getNombre());
+        });
+        
         
         jDateFechaRegistro.setDate(new java.util.Date());
         
@@ -161,8 +170,6 @@ private InterfacePlataforma ICU;
 
         jLabel11.setText("Categorias");
 
-        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -188,14 +195,14 @@ private InterfacePlataforma ICU;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCrear))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(combobox_artista, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(combobox_artista, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
@@ -390,8 +397,9 @@ private InterfacePlataforma ICU;
             return;
         }
         String fecha = ((JTextField) jDateFechaRegistro.getDateEditor().getUiComponent()).getText();
+        EstadoEspectaculo estado = EstadoEspectaculo.INGRESADO;
        
-        Espectaculo es = new Espectaculo(plataforma,nombre,descripcion,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista);
+        Espectaculo es = new Espectaculo(plataforma,nombre,descripcion,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista, estado);
         this.ICU.crear_Espectaculo(es);  
        
     }//GEN-LAST:event_btnCrearActionPerformed
