@@ -219,19 +219,22 @@ public class ControllerUsuario implements InterfaceUsuario{
             PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
-            usuarios_set.next();
-            artista = new Artista(
-                "",
-                "",
-                "",
-                usuarios_set.getString("nickname"),
-                usuarios_set.getString("nombre"),
-                usuarios_set.getString("apellido"),
-                usuarios_set.getString("correo"),
-                usuarios_set.getDate("nacimiento"),
-                usuarios_set.getInt("id"),
-                usuarios_set.getString("contrasenia")
-            );
+            if (usuarios_set.next()) {
+                artista = new Artista(
+                    "",
+                    "",
+                    "",
+                    usuarios_set.getString("nickname"),
+                    usuarios_set.getString("nombre"),
+                    usuarios_set.getString("apellido"),
+                    usuarios_set.getString("correo"),
+                    usuarios_set.getDate("nacimiento"),
+                    usuarios_set.getInt("id"),
+                    usuarios_set.getString("contrasenia")
+                );
+            }
+            else
+                return null;
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
             return artista;
@@ -241,10 +244,13 @@ public class ControllerUsuario implements InterfaceUsuario{
             PreparedStatement query = conn.prepareStatement("SELECT * FROM artista as a WHERE a.id=?");
             query.setInt(1, artista.getId());
             ResultSet artistas_set = query.executeQuery();
-            artistas_set.next();
-            artista.setDescripcion(artistas_set.getString("descripcion"));
-            artista.setBiografia(artistas_set.getString("biografia"));
-            artista.setSitio_web(artistas_set.getString("sitio_web"));
+            if (artistas_set.next()) {
+                artista.setDescripcion(artistas_set.getString("descripcion"));
+                artista.setBiografia(artistas_set.getString("biografia"));
+                artista.setSitio_web(artistas_set.getString("sitio_web"));
+            }
+            else
+                return null;
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
             return artista;
