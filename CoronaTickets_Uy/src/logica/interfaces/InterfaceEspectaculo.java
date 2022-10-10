@@ -31,7 +31,7 @@ public interface InterfaceEspectaculo {
     void canjear_registro(int id_funcion, int id_espectador);
     
     
-    Boolean registrar_paquete(Paquete paquete);
+    Boolean registrar_paquete(Paquete paquete, byte[] imagen);
     
     Espectaculo obtener_espectaculo(int id);
     

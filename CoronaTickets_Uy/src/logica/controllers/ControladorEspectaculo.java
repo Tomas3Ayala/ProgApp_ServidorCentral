@@ -307,15 +307,16 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
     }
     
     @Override
-    public Boolean registrar_paquete(Paquete paquete) { // retorna true si se pudo
+    public Boolean registrar_paquete(Paquete paquete, byte[] imagen) { // retorna true si se pudo
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO paquete (nombre, descripcion, fecha_inicio, fecha_fin, descuento) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO paquete (nombre, descripcion, fecha_inicio, fecha_fin, descuento, imagen) VALUES (?, ?, ?, ?, ?,?)");
             query.setString(1, paquete.getNombre());
             query.setString(2, paquete.getDescripcion());
             query.setDate(3, new java.sql.Date(paquete.getFecha_inicio().getTime()));
             query.setDate(4, new java.sql.Date(paquete.getFecha_fin().getTime()));
             query.setInt(5, paquete.getDescuento());
+            query.setBytes(6, imagen);
             query.executeUpdate();
         } catch (SQLException ex) {
             if (ex.getErrorCode() == 1062) // 1062 es un error de dato unico duplicado
@@ -350,6 +351,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectaculos_set.getDate("fecha_registro"),
                         espectaculos_set.getInt("id"),
                         espectaculos_set.getInt("id_artista")
+                       
                 );
             }
         } catch (SQLException ex) {

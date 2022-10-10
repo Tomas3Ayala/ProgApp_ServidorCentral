@@ -36,7 +36,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
     }
     
     @Override
-    public boolean crear_Espectaculo(Espectaculo espectaculo) {
+    public boolean crear_Espectaculo(Espectaculo espectaculo, byte[] imagen) {
         Connection conn = ConexionDB.getInstance().getConnection();
         
         String nombrePlataforma = espectaculo.getPlataforma();
@@ -51,7 +51,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
          
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `categoria`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
@@ -63,11 +63,11 @@ public class ControladorPlataforma implements InterfacePlataforma {
             query.setInt(9, espectaculo.getId_artista());
             query.setInt(10, id_Plataforma);
             query.setString(11, espectaculo.getEstado().toString());
-            
-            
+            query.setString(12, espectaculo.getCategoria());
+            query.setBytes(13, imagen);
             query.executeUpdate();
             // System.out.println("FECHA: " + nacimiento);
-            JOptionPane.showMessageDialog(null, "Datos guardados Correctamente");
+            JOptionPane.showMessageDialog(null, "Espectaculo creado Correctamente");
             
 
         } catch (SQLException ex) {
@@ -100,17 +100,16 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }  
     }*/
  @Override
-    public  boolean Alta_de_Funcion (Funcion f){
-       //primero obtener los id del artista y de espectaculo 
-     // int id_espectaculo = ExtraerIdEspectaculo(nombre_espectaculo, Plataforma );
+    public  boolean Alta_de_Funcion (Funcion f, byte[] imagen){
      Connection conn = ConexionDB.getInstance().getConnection();
      try {
-         PreparedStatement query = conn.prepareStatement("INSERT INTO `funcion` (`nombre`, `fecha`, `hora_inicio`, `fecha_registro`, `id_espectaculo`) VALUES (?,?,?,?,?)");
+         PreparedStatement query = conn.prepareStatement("INSERT INTO `funcion` (`nombre`, `fecha`, `hora_inicio`, `fecha_registro`, `id_espectaculo`, `imagen`) VALUES (?,?,?,?,?,?)");
          query.setString(1, f.getNombre());
          query.setDate(2, (Date) f.getFecha());
          query.setInt(3, f.getHora_inicio());
          query.setDate(4, (Date) f.getFecha_registro());
          query.setInt(5, f.getId_espectaculo());
+         query.setBytes(6, imagen);
          query.executeUpdate();
 
 

@@ -19,14 +19,14 @@ import logica.clases.Plataforma;
  * @author 59892
  */
 public interface InterfacePlataforma {
-    boolean crear_Espectaculo(Espectaculo espectaculo);
+    boolean crear_Espectaculo(Espectaculo espectaculo, byte[] imagen);
     ArrayList<Artista> obtener_artistas_disponibles();
     ArrayList<Categoria> obtener_categorias();
     int ExtraerIdDeCombo (String combo);
     int ExtraeridPaquete (String nompaquete);
    
     boolean Alta_Categoria (Categoria c);
-    boolean Alta_de_Funcion (Funcion f );
+    boolean Alta_de_Funcion (Funcion f, byte[] imagen );
     boolean Alta_Plataforma (Plataforma p );
     boolean Agregar_espectaculo_a_paquete (int idEspectaculo, String nomPaquete );
     ArrayList<String> obtener_espectaculos_de_paquete(int idPaquete);

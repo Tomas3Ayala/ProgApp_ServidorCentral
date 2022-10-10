@@ -6,11 +6,18 @@
 package Presentacion;
 
 import com.sun.javafx.print.Units;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import logica.Fabrica;
@@ -85,6 +92,7 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        imagen = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,14 +181,23 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
             }
         });
 
+        imagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagen.setText("Click aqui para agregar una imagen");
+        imagen.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        imagen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                imagenMouseReleasedF(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(combobox_plataformas, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -193,67 +210,70 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
                             .addComponent(jDateFechaFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(combobox_artistas, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(30, 30, 30)
-                                        .addComponent(btnAgregar)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSubirFuncion)
-                                    .addComponent(btnCancelar)
-                                    .addComponent(jButton1)))))
+                            .addComponent(jLabel6))
+                        .addContainerGap(440, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(combobox_artistas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnAgregar)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSubirFuncion)
+                    .addComponent(btnCancelar)
+                    .addComponent(jButton1)
+                    .addComponent(imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(combobox_plataformas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(imagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addGap(11, 11, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDateFechaFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDateFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(combobox_artistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(combobox_plataformas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateFechaFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(combobox_artistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAgregar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(btnSubirFuncion)
                         .addGap(23, 23, 23)
-                        .addComponent(btnCancelar)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                        .addComponent(btnCancelar))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -282,7 +302,7 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
             lista_espectaculos.setListData((String[]) lista.toArray(new String[lista.size()]));
         }
     }//GEN-LAST:event_combobox_plataformasItemStateChanged
-
+    
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         String artistas_agregados = combobox_artistas.getSelectedItem().toString();
@@ -315,11 +335,11 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se ha selecciona espectaculo");
             return;
         }
-        
+
         int hora_inicio = -1;
         try {
-            hora_inicio=Integer.parseInt(txtHora.getText());
-        } catch(NumberFormatException e) {
+            hora_inicio = Integer.parseInt(txtHora.getText());
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "La hora de inicio debe ser un numero");
             return;
         }
@@ -327,34 +347,33 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "La hora de inicio debe ser un numero entre 0 y 23 incluyente");
             return;
         }
-        
+
         String Nombre = txtNombre.getText();
         if (Nombre.length() == 0) {
             JOptionPane.showMessageDialog(this, "Debe especificarse un nombre para la nueva funcion");
             return;
         }
-        String fecha_funcion= ((JTextField) jDateFechaFuncion.getDateEditor().getUiComponent()).getText();
+        String fecha_funcion = ((JTextField) jDateFechaFuncion.getDateEditor().getUiComponent()).getText();
 
-        String fecha_registro= ((JTextField) jDateFechaRegistro.getDateEditor().getUiComponent()).getText();
+        String fecha_registro = ((JTextField) jDateFechaRegistro.getDateEditor().getUiComponent()).getText();
         int id_espectaculo = this.ICU.ExtraerIdDeCombo(lista_espectaculos.getSelectedValue());
-        
-        Funcion funcion = new Funcion(Nombre, Date.valueOf(fecha_funcion), hora_inicio,Date.valueOf(fecha_registro), id_espectaculo);
+
+        Funcion funcion = new Funcion(Nombre, Date.valueOf(fecha_funcion), hora_inicio, Date.valueOf(fecha_registro), id_espectaculo);
         String nombre_Plataforma = combobox_plataformas.getSelectedItem().toString();
-// String plataforma = combobox_plataformas.getSelectedItem().toString();
-        
-      //  Espectaculo es = new Espectaculo(plataforma,correo,nombre,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista);
-     if (this.ICU.Alta_de_Funcion(funcion)){
-               int idfuncion = this.ICU.obtener_idfuncion(Nombre);
-      for (int i = 0; i<listaArtistas.size(); i++){
-          String artista = listaArtistas.get(i);
-          int idartista = this.ICU.obtener_idartista(artista);
-          this.ICU.insertar_Artista_Invitado(idartista, idfuncion);
-      }
-      JOptionPane.showMessageDialog(this, "Funcion creada correctamente");
-     }
-     else {
-         JOptionPane.showMessageDialog(null, "Ya existe una funcion con ese Nombre");
-     }
+        // String plataforma = combobox_plataformas.getSelectedItem().toString();
+
+        //  Espectaculo es = new Espectaculo(plataforma,correo,nombre,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista);
+        if (this.ICU.Alta_de_Funcion(funcion, imageFuncion)) {
+            int idfuncion = this.ICU.obtener_idfuncion(Nombre);
+            for (int i = 0; i < listaArtistas.size(); i++) {
+                String artista = listaArtistas.get(i);
+                int idartista = this.ICU.obtener_idartista(artista);
+                this.ICU.insertar_Artista_Invitado(idartista, idfuncion);
+            }
+            JOptionPane.showMessageDialog(this, "Funcion creada correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ya existe una funcion con ese Nombre");
+        }
 
        
     }//GEN-LAST:event_btnSubirFuncionActionPerformed
@@ -366,6 +385,21 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new ConsultaFuncionEspectaculo().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void imagenMouseReleasedF(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagenMouseReleasedF
+       JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileChooser.getSelectedFile();
+                imageFuncion = Files.readAllBytes(file.toPath());
+                imagen.setIcon(new ImageIcon(new ImageIcon(imageFuncion).getImage().getScaledInstance(imagen.getWidth(), imagen.getHeight(), java.awt.Image.SCALE_SMOOTH)));
+                
+            } catch (IOException ex) {
+                Logger.getLogger(RegistraUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_imagenMouseReleasedF
 
     /**
      * @param args the command line arguments
@@ -401,6 +435,9 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
             }
         });
     }
+ 
+    
+    private byte[] imageFuncion;
     private String prev_espectaculos_item;
     private String prev_plataformas_item;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -409,6 +446,7 @@ public class Alta_funcion_espectaculo extends javax.swing.JFrame {
     private javax.swing.JButton btnSubirFuncion;
     private javax.swing.JComboBox<String> combobox_artistas;
     private javax.swing.JComboBox<String> combobox_plataformas;
+    private javax.swing.JLabel imagen;
     private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateFechaFuncion;
     private com.toedter.calendar.JDateChooser jDateFechaRegistro;
