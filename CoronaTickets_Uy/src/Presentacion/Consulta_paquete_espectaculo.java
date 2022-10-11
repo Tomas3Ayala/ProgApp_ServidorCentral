@@ -183,8 +183,13 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 lista.add("Descuento: "+descuento);
                 String id =  String.valueOf(paquete.getId());
                 lista.add("ID: "+id);
+                for (int i= 0; i<listaCategorias.size(); i++){
+                   lista.add("Categorias: "+ listaCategorias.get(i)); 
+                }
+                
                 
             lista_info_paquete.setListData((String[]) lista.toArray(new String[lista.size()]));
+            //lista_info_paquete.setListData((String[]) listaCategorias.toArray(new String[listaCategorias.size()]));
             ArrayList <String> espectaculos = this.ICU.obtener_espectaculos_de_paquete(idpaquete);
             lista_espectaculos_de_paquete.setListData((String[]) espectaculos.toArray(new String[espectaculos.size()]));
        
@@ -203,25 +208,24 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
         if (item2 != prev_espectaculo_item && item2 != null) {
             prev_espectaculo_item = item2;
             Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
+            
             ArrayList<String> listaEspectaculos = new ArrayList<>();
-                listaEspectaculos.add("Nombre: "+espectaculo.getNombre());
+               listaEspectaculos.add("Nombre: "+espectaculo.getNombre());
                 listaEspectaculos.add("Descripcion: "+espectaculo.getDescripcion());
                 String duracion = String.valueOf(espectaculo.getDuracion());//duracion convertida a string
                 listaEspectaculos.add("Duracion: "+duracion);
                 String min_espectadores = String.valueOf(espectaculo.getMin_espectador());//minimo de espectadores
-                listaEspectaculos.add("Min espectadores: "+min_espectadores);
+                listaEspectaculos.add("Minimo de espectadores: "+min_espectadores);
                 String max_espectadores = String.valueOf(espectaculo.getMax_espectador());//maximo de espectadores
-                listaEspectaculos.add("Max espectadores: "+max_espectadores);
-                listaEspectaculos.add("URL "+espectaculo.getUrl());
+                listaEspectaculos.add("Maximo de escpectadores: "+max_espectadores);
+                listaEspectaculos.add("URL: "+espectaculo.getUrl());
                 String costo = String.valueOf(espectaculo.getCosto());//costo
                 listaEspectaculos.add("Costo: "+costo);
                 listaEspectaculos.add("Fecha de registro: "+espectaculo.getFecha_registro().toString());
-                String idEspectaculo = String.valueOf(espectaculo.getId()); //idEspectaculo
-                listaEspectaculos.add("ID: "+idEspectaculo);
-                String idArtista = String.valueOf(espectaculo.getId_artista());//idArtista
-                listaEspectaculos.add("ID Artista organizador: "+idArtista);
+                listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
                 String idPlataforma = String.valueOf(espectaculo.getPlataforma());//id de Plataforma
-                listaEspectaculos.add("Plataforma: "+idPlataforma);  
+                listaEspectaculos.add("Plataforma: "+idPlataforma);
+                listaCategorias.add("-"+espectaculo.getCategoria());
                 
             lista_info_espectaculo.setListData((String[]) listaEspectaculos.toArray(new String[listaEspectaculos.size()]));
             
@@ -267,7 +271,7 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
             }
         });
     }
-   
+    private ArrayList<String> listaCategorias = new ArrayList<>();
     private String prev_paquete_item;
     private String prev_espectaculo_item;
 

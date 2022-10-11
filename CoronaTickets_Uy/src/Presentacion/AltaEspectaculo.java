@@ -345,6 +345,11 @@ private InterfacePlataforma ICU;
         String plataforma = combobox_plataformas.getSelectedItem().toString();
         String categoria = comboCategoria.getSelectedItem().toString();
         String nombre = txtNombre.getText();
+        if (categoria.length() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe especificarse categoria");
+            return;
+        }
+        
         if (nombre.length() == 0) {
             JOptionPane.showMessageDialog(this, "Debe especificarse un nombre para el nuevo espectaculo");
             return;
@@ -418,7 +423,17 @@ private InterfacePlataforma ICU;
         EstadoEspectaculo estado = EstadoEspectaculo.INGRESADO;
        
         Espectaculo es = new Espectaculo(plataforma,nombre,descripcion,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista, estado, categoria);
-        this.ICU.crear_Espectaculo(es, imageEspectaculo);  
+       if (this.ICU.crear_Espectaculo(es, imageEspectaculo)){
+           int idespec = this.ICU.obtener_idespectaculo(nombre);
+           int idecatego = this.ICU.obtener_id_categoria(categoria);
+           if (this.ICU.insertar_en_categoria_espectaculo(idecatego, idespec)){
+               JOptionPane.showMessageDialog(this, "Se agrego el espectaculo correctamente");
+           } else {
+               JOptionPane.showMessageDialog(this, "Hubo un problema en agregar en categoria espectaculo");
+           }
+       }else {
+           JOptionPane.showMessageDialog(this, "Hubo un problema en agregar el espectaculo");
+       }
        
     }//GEN-LAST:event_btnCrearActionPerformed
 
