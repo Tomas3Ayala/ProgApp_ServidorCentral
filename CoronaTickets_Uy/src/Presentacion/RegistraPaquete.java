@@ -5,7 +5,14 @@
  */
 package Presentacion;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import logica.Fabrica;
 import logica.clases.Paquete;
@@ -48,6 +55,7 @@ public class RegistraPaquete extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         field_descripcion = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        imagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de paquete");
@@ -93,6 +101,14 @@ public class RegistraPaquete extends javax.swing.JFrame {
             }
         });
 
+        imagen.setText("Click para agregar una imagen");
+        imagen.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        imagen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                imagenMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,7 +146,9 @@ public class RegistraPaquete extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(field_nombre)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE))))
+                .addGap(28, 28, 28)
+                .addComponent(imagen)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,10 +158,15 @@ public class RegistraPaquete extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(field_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -201,7 +224,7 @@ public class RegistraPaquete extends javax.swing.JFrame {
             return;
         }
         Paquete paquete = new Paquete(field_nombre.getText(), field_descripcion.getText(), periodo_inicio.getCalendar().getTime(), periodo_fin.getCalendar().getTime(), descuento, -1);
-        if (!Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(paquete))
+        if (!Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(paquete, imagePaquete))
             JOptionPane.showMessageDialog(this, "El nombre '" + field_nombre.getText() + "' ya esta siendo usado por otro paquete");
         else
             JOptionPane.showMessageDialog(this, "Se registro con exito el paquete");
@@ -211,11 +234,27 @@ public class RegistraPaquete extends javax.swing.JFrame {
         new Consulta_paquete_espectaculo().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void imagenMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagenMouseReleased
+        JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileChooser.getSelectedFile();
+                imagePaquete = Files.readAllBytes(file.toPath());
+                imagen.setIcon(new ImageIcon(new ImageIcon(imagePaquete).getImage().getScaledInstance(imagen.getWidth(), imagen.getHeight(), java.awt.Image.SCALE_SMOOTH)));
+
+            } catch (IOException ex) {
+                Logger.getLogger(RegistraUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_imagenMouseReleased
+       private byte[] imagePaquete;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelar;
     private javax.swing.JTextArea field_descripcion;
     private javax.swing.JTextField field_descuento;
     private javax.swing.JTextField field_nombre;
+    private javax.swing.JLabel imagen;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

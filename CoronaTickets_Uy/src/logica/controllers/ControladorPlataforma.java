@@ -36,7 +36,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
     }
     
     @Override
-    public boolean crear_Espectaculo(Espectaculo espectaculo) {
+    public boolean crear_Espectaculo(Espectaculo espectaculo, byte[] imagen) {
         Connection conn = ConexionDB.getInstance().getConnection();
         
         String nombrePlataforma = espectaculo.getPlataforma();
@@ -51,7 +51,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
          
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `categoria`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
@@ -62,11 +62,12 @@ public class ControladorPlataforma implements InterfacePlataforma {
             query.setDate(8, (Date) espectaculo.getFecha_registro());
             query.setInt(9, espectaculo.getId_artista());
             query.setInt(10, id_Plataforma);
-            
-            
+            query.setString(11, espectaculo.getEstado().toString());
+            query.setString(12, espectaculo.getCategoria());
+            query.setBytes(13, imagen);
             query.executeUpdate();
             // System.out.println("FECHA: " + nacimiento);
-            JOptionPane.showMessageDialog(null, "Datos guardados Correctamente");
+            
             
 
         } catch (SQLException ex) {
@@ -99,17 +100,16 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }  
     }*/
  @Override
-    public  boolean Alta_de_Funcion (Funcion f){
-       //primero obtener los id del artista y de espectaculo 
-     // int id_espectaculo = ExtraerIdEspectaculo(nombre_espectaculo, Plataforma );
+    public  boolean Alta_de_Funcion (Funcion f, byte[] imagen){
      Connection conn = ConexionDB.getInstance().getConnection();
      try {
-         PreparedStatement query = conn.prepareStatement("INSERT INTO `funcion` (`nombre`, `fecha`, `hora_inicio`, `fecha_registro`, `id_espectaculo`) VALUES (?,?,?,?,?)");
+         PreparedStatement query = conn.prepareStatement("INSERT INTO `funcion` (`nombre`, `fecha`, `hora_inicio`, `fecha_registro`, `id_espectaculo`, `imagen`) VALUES (?,?,?,?,?,?)");
          query.setString(1, f.getNombre());
          query.setDate(2, (Date) f.getFecha());
          query.setInt(3, f.getHora_inicio());
          query.setDate(4, (Date) f.getFecha_registro());
          query.setInt(5, f.getId_espectaculo());
+         query.setBytes(6, imagen);
          query.executeUpdate();
 
 
@@ -461,6 +461,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         return categorias;
     }
     
+    
     @Override
     public boolean Alta_Categoria(Categoria c) {
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -480,6 +481,55 @@ public class ControladorPlataforma implements InterfacePlataforma {
             }
         }
         return true;
+    }
+
+  /*  @Override
+    public ArrayList<String> obtener_categorias_en_paquete(int idPaquete) {
+         ArrayList<String> categorias = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.categoria FROM espectaculo as e INNER JOIN plataforma on e.id_plataforma = plataforma.id where EXISTS (select * from paquete_espectaculo as pe where pe.id_paquete ='" + idPaquete + "' and e.id = pe.id_espectaculo)");
+            ResultSet categorias_set = query.executeQuery();
+            while (categorias_set.next())
+                categorias.add(categorias_set.getString("nombre"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return categorias;
+
+    }*/
+
+    @Override
+    public int obtener_id_categoria(String nombre_categoria) {
+       int idcategoria = 0;
+       Connection conn = ConexionDB.getInstance().getConnection();
+       try {
+         PreparedStatement query = conn.prepareStatement("SELECT id FROM categoria WHERE nombre ='" + nombre_categoria + "'");
+         ResultSet idcategoria_set = query.executeQuery();
+         idcategoria_set.next();
+            idcategoria = idcategoria_set.getInt("id");         
+     } catch (SQLException ex) {
+          Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+     }
+       return idcategoria;
+    }
+
+    @Override
+    public boolean insertar_en_categoria_espectaculo(int idecategoria, int idespectaculo) {
+         Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `categoria_espectaculo` (`id_categoria`, `id_espectaculo`) VALUES (?,?)");
+            query.setInt(1, idecategoria);
+            query.setInt(2, idespectaculo);
+            query.executeUpdate();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorPlataforma.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
     }
 
 }

@@ -6,7 +6,9 @@
 package Presentacion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import logica.Fabrica;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
@@ -29,6 +31,16 @@ public class Aceptar_Rechazar_Espectaculo extends javax.swing.JFrame {
         initComponents();
         this.ICU = Fabrica.getInstance().getInstanceControladorEspectaculo();
         lista_espectaculos_ingresados.setModel(Espectaculos);
+        ArrayList<Espectaculo> espectaculosi = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculos_ingresados();
+        ArrayList<String> lista = new ArrayList<>();
+        espectaculosi.forEach((espectaculo) -> {
+            lista.add(espectaculo.getId() + "-" + espectaculo.getNombre());
+        });
+
+        lista_espectaculos_ingresados.setListData((String[]) lista.toArray(new String[lista.size()]));
+    }
+    public void actualizar_combo (){
+         lista_espectaculos_ingresados.setModel(Espectaculos);
         ArrayList<Espectaculo> espectaculosi = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculos_ingresados();
         ArrayList<String> lista = new ArrayList<>();
         espectaculosi.forEach((espectaculo) -> {
@@ -62,6 +74,11 @@ public class Aceptar_Rechazar_Espectaculo extends javax.swing.JFrame {
         jLabel1.setText("Espectaculos Ingresados ");
 
         btnRechazar.setText("Rechazar espectaculo");
+        btnRechazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRechazarActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("Aceptar espectaculo");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -117,12 +134,39 @@ public class Aceptar_Rechazar_Espectaculo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
+       String espectaculo = lista_espectaculos_ingresados.getSelectedValue();
+       String[] parts = espectaculo.split("-");
+       String idString = parts[0];
+       int id = Integer.parseInt(idString);
+       if (ICU.aceptar_espectaculo(id)){
+            JOptionPane.showMessageDialog(null, "Espectaculo aceptado");
+            actualizar_combo();
+       }else 
+       {
+           JOptionPane.showMessageDialog(null, "Hubo algun problema al aceptar el espectaculo");
+       }
+       
+       
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
        dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechazarActionPerformed
+        String espectaculo = lista_espectaculos_ingresados.getSelectedValue();
+       String[] parts = espectaculo.split("-");
+       String idString = parts[0];
+       int id = Integer.parseInt(idString);
+       if (ICU.rechazar_espectaculo(id)){
+            JOptionPane.showMessageDialog(null, "Espectaculo rechazado");
+            actualizar_combo();
+            
+       }else 
+       {
+           JOptionPane.showMessageDialog(null, "Hubo algun problema al rechazar el espectaculo");
+       }
+    }//GEN-LAST:event_btnRechazarActionPerformed
 
     /**
      * @param args the command line arguments

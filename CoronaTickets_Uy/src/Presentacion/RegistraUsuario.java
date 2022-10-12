@@ -150,7 +150,9 @@ public class RegistraUsuario extends javax.swing.JFrame {
 
         jLabel7.setText("Contraseña:");
 
-        imagen.setText("image");
+        imagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagen.setText("Click aqui para agregar una imagen");
+        imagen.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         imagen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 imagenMouseReleased(evt);

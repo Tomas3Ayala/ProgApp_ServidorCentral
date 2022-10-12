@@ -305,7 +305,7 @@ public class Consulta_de_espectaculo extends javax.swing.JFrame {
             prev_espectaculo_item = item2;
             Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
             ArrayList<String> listaEspectaculos = new ArrayList<>();
-                listaEspectaculos.add(espectaculo.getNombre());
+                listaEspectaculos.add("Nombre: "+espectaculo.getNombre());
                 listaEspectaculos.add("Descripcion: "+espectaculo.getDescripcion());
                 String duracion = String.valueOf(espectaculo.getDuracion());//duracion convertida a string
                 listaEspectaculos.add("Duracion: "+duracion);
@@ -317,10 +317,7 @@ public class Consulta_de_espectaculo extends javax.swing.JFrame {
                 String costo = String.valueOf(espectaculo.getCosto());//costo
                 listaEspectaculos.add("Costo: "+costo);
                 listaEspectaculos.add("Fecha de registro: "+espectaculo.getFecha_registro().toString());
-                String idEspectaculo = String.valueOf(espectaculo.getId()); //idEspectaculo
-                listaEspectaculos.add("ID espectaculo: "+idEspectaculo);
-                String idArtista = String.valueOf(espectaculo.getId_artista());//idArtista
-                listaEspectaculos.add("ID artista: "+idArtista);
+                listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
                 String idPlataforma = String.valueOf(espectaculo.getPlataforma());//id de Plataforma
                 listaEspectaculos.add("Plataforma: "+idPlataforma);  
                 
