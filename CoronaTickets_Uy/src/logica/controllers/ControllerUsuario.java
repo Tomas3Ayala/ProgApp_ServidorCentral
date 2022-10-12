@@ -288,6 +288,52 @@ public class ControllerUsuario implements InterfaceUsuario{
         }
         return false;
     }
+
+    @Override
+    public boolean existe_correo_de_usuario(String correo) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=?");
+            query.setString(1, correo);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public String obtener_nickname_de_correo(String correo) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=?");
+            query.setString(1, correo);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next())
+                return usuarios_set.getString("nickname");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public byte[] obtener_imagen_usuario_con_nickname(String nickname) {
+        Connection con = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM usuario WHERE nickname=?");
+            query.setString(1, nickname);
+            ResultSet naves_set = query.executeQuery();
+            if (naves_set.next()) {
+                return naves_set.getBytes("imagen");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     @Override
     public ArrayList<Funcion> obtener_funciones_a_las_que_se_registro_espectador(int id) {

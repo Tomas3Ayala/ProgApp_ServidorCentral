@@ -17,13 +17,16 @@ public interface InterfaceUsuario {
     
     void modificar_espectador(int id, Espectador espectador);
     void modificar_artista(int id, Artista artista);
-   // byte[] obtener_imagen_usuario (int id);
     
     Espectador obtener_espectador_de_nickname(String nickname); // retorna siempre que halla un usuario con ese nickname, independientemente de si es un espectador (si no hay, lanza excepcion)
     Artista obtener_artista_de_nickname(String nickname); // retorna null si el usuario con ese nickname no es artista
     
     ArrayList<String> obtener_nicknames_de_usuarios();
     boolean existe_nickname_de_usuario(String nickname);
+    boolean existe_correo_de_usuario(String correo);
+    String obtener_nickname_de_correo(String correo);
+
+    byte[] obtener_imagen_usuario_con_nickname(String nickname);
     
     ArrayList<Funcion> obtener_funciones_a_las_que_se_registro_espectador(int id);
     ArrayList<Espectaculo> obtener_espectaculos_organizados_por_artista(int id);
