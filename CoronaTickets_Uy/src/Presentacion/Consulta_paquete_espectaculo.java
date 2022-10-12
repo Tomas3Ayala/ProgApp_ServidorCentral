@@ -169,10 +169,12 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
 
     private void lista_paquetes_registradosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lista_paquetes_registradosValueChanged
         String item = (String) lista_paquetes_registrados.getSelectedValue();  
+        
         if (item != prev_paquete_item && item != null) {
             prev_paquete_item = item;
              
             int idpaquete = this.ICU.ExtraeridPaquete(item);
+            ArrayList <String> espectaculos = this.ICU.obtener_espectaculos_de_paquete(idpaquete);
             Paquete paquete = Fabrica.getInstance().getInstanceControladorPlataforma().obtener_info_paquetes(idpaquete);
             ArrayList<String> lista = new ArrayList<>();
                 lista.add("Nombre: "+paquete.getNombre());
@@ -183,14 +185,17 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 lista.add("Descuento: "+descuento);
                 String id =  String.valueOf(paquete.getId());
                 lista.add("ID: "+id);
-                for (int i= 0; i<listaCategorias.size(); i++){
-                   lista.add("Categorias: "+ listaCategorias.get(i)); 
+                for (int i= 0; i<espectaculos.size(); i++){
+                    int idespec = this.ICU.obtener_idespectaculo(espectaculos.get(i));
+                            Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
+                   lista.add("Categorias"+(i+1)+": "+ espectaculo.getCategoria()); 
                 }
                 
                 
             lista_info_paquete.setListData((String[]) lista.toArray(new String[lista.size()]));
             //lista_info_paquete.setListData((String[]) listaCategorias.toArray(new String[listaCategorias.size()]));
-            ArrayList <String> espectaculos = this.ICU.obtener_espectaculos_de_paquete(idpaquete);
+            
+             
             lista_espectaculos_de_paquete.setListData((String[]) espectaculos.toArray(new String[espectaculos.size()]));
        
         }
@@ -204,7 +209,7 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
          String item2 = (String) lista_espectaculos_de_paquete.getSelectedValue();
         if (lista_espectaculos_de_paquete.getSelectedValue()!= null){
         int idespec = this.ICU.obtener_idespectaculo(item2);          
-            System.out.println(item2);
+            
         if (item2 != prev_espectaculo_item && item2 != null) {
             prev_espectaculo_item = item2;
             Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
@@ -225,7 +230,7 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
                 String idPlataforma = String.valueOf(espectaculo.getPlataforma());//id de Plataforma
                 listaEspectaculos.add("Plataforma: "+idPlataforma);
-                listaCategorias.add("-"+espectaculo.getCategoria());
+               
                 
             lista_info_espectaculo.setListData((String[]) listaEspectaculos.toArray(new String[listaEspectaculos.size()]));
             
