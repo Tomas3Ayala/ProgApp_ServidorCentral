@@ -14,6 +14,7 @@ public interface InterfaceUsuario {
     int registrar_usuario(Usuario usuario, byte[] imagen); // retorna -1 si no se pudo registrar el usuario, sino retorna el id del mismo
     void registrar_artista(Artista artista, byte[] imagen);
     void registrar_espectador(Espectador espectador, byte[] imagen);
+    void modificar_imagen_de_usuario(int id, byte[] imagen);
     
     void modificar_espectador(int id, Espectador espectador);
     void modificar_artista(int id, Artista artista);
