@@ -185,11 +185,16 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 lista.add("Descuento: "+descuento);
                 String id =  String.valueOf(paquete.getId());
                 lista.add("ID: "+id);
-                for (int i= 0; i<espectaculos.size(); i++){
-                    int idespec = this.ICU.obtener_idespectaculo(espectaculos.get(i));
-                            Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
-                   lista.add("Categorias"+(i+1)+": "+ espectaculo.getCategoria()); 
+                lista.add("Categorias: ");
+               for (int i = 0; i < espectaculos.size(); i++) {
+                int idespec = this.ICU.obtener_idespectaculo(espectaculos.get(i));
+                Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
+                String cat= espectaculo.getCategoria();
+                boolean existe = lista.contains(cat);
+                if (!existe){
+                lista.add(espectaculo.getCategoria());
                 }
+            }
                 
                 
             lista_info_paquete.setListData((String[]) lista.toArray(new String[lista.size()]));
