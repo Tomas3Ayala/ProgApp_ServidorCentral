@@ -141,6 +141,20 @@ public class ControllerUsuario implements InterfaceUsuario{
     }
     
     @Override
+    public void modificar_imagen_de_usuario(int id, byte[] imagen) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+
+        try {
+            PreparedStatement query = conn.prepareStatement("UPDATE `usuario` SET `imagen` = ? WHERE `usuario`.`id` = ?");
+            query.setBytes(1, imagen);
+            query.setInt(2, id);
+            query.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
     public void modificar_espectador(int id, Espectador espectador) {
         Connection conn = ConexionDB.getInstance().getConnection();
 
@@ -154,7 +168,17 @@ public class ControllerUsuario implements InterfaceUsuario{
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // "UPDATE `usuario` SET `nickname` = '', `nombre` = '', `apellido` = '', `correo` = '', `nacimiento` = '2022-08-22' WHERE `usuario`.`id` = 1"
+        
+        if (espectador.getContrasenia() != null) {
+            try {
+                PreparedStatement query = conn.prepareStatement("UPDATE `usuario` SET `contrasenia` = ? WHERE `usuario`.`id` = ?");
+                query.setString(1, espectador.getContrasenia());
+                query.setInt(2, id);
+                query.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -171,6 +195,19 @@ public class ControllerUsuario implements InterfaceUsuario{
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
             return;
+        }
+
+        if (artista.getContrasenia() != null) {
+            if (artista.getContrasenia() != null) {
+                try {
+                    PreparedStatement query = conn.prepareStatement("UPDATE `usuario` SET `contrasenia` = ? WHERE `usuario`.`id` = ?");
+                    query.setString(1, artista.getContrasenia());
+                    query.setInt(2, id);
+                    query.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
 
         try {
