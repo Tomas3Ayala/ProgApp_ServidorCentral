@@ -189,7 +189,9 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                for (int i = 0; i < espectaculos.size(); i++) {
                 int idespec = this.ICU.obtener_idespectaculo(espectaculos.get(i));
                 Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
-                String cat= espectaculo.getCategoria();
+                ArrayList<String> cat = new ArrayList<>();
+                cat = this.ICU.obtener_categorias_espectaculo(idespec);
+//String cat= espectaculo.getCategoria();
                 boolean existe = lista.contains(cat);
                 if (!existe){
                 lista.add(espectaculo.getCategoria());

@@ -24,7 +24,7 @@ public interface InterfacePlataforma {
     ArrayList<Categoria> obtener_categorias();
     int ExtraerIdDeCombo (String combo);
     int ExtraeridPaquete (String nompaquete);
-   
+    ArrayList<String> obtener_categorias_espectaculo(int idespec);
     int obtener_id_categoria(String nombre_categoria);
     
     

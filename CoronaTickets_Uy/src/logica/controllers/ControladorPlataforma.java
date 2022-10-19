@@ -51,7 +51,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
          
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `categoria`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`,`imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
@@ -63,8 +63,8 @@ public class ControladorPlataforma implements InterfacePlataforma {
             query.setInt(9, espectaculo.getId_artista());
             query.setInt(10, id_Plataforma);
             query.setString(11, espectaculo.getEstado().toString());
-            query.setString(12, espectaculo.getCategoria());
-            query.setBytes(13, imagen);
+            //query.setString(12, espectaculo.getCategoria());
+            query.setBytes(12, imagen);
             query.executeUpdate();
             // System.out.println("FECHA: " + nacimiento);
             
@@ -530,6 +530,24 @@ public class ControladorPlataforma implements InterfacePlataforma {
             return false;
         }
 
+    }
+    
+    @Override
+    public ArrayList<String> obtener_categorias_espectaculo(int idespec) {
+         ArrayList<String> categorias = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT c.nombre FROM espectaculo as e, categoria as c, categoria_espectaculo as ce where ce.id_espectaculo = e.id and ce.id_categoria = c.id and  ce.id_espectaculo = "+idespec+" ");
+            ResultSet categoria_set = query.executeQuery();
+            while (categoria_set.next()) 
+                
+                categorias.add(categoria_set.getString("nombre"));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return categorias;
     }
 
 }

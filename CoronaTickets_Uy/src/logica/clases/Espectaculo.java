@@ -50,7 +50,7 @@ public class Espectaculo {
         this.categoria = categoria;
     }
     
-    public Espectaculo(String plataforma, String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id_artista, EstadoEspectaculo estado, String categoria) {
+    public Espectaculo(String plataforma, String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id_artista, EstadoEspectaculo estado) {
         this.plataforma = plataforma;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -62,7 +62,7 @@ public class Espectaculo {
         this.fecha_registro = fecha_registro;
         this.id_artista = id_artista;
         this.estado = estado;
-        this.categoria = categoria;
+       // this.categoria = categoria;
         
     }
     
