@@ -25,6 +25,7 @@ public interface InterfacePlataforma {
     int ExtraerIdDeCombo (String combo);
     int ExtraeridPaquete (String nompaquete);
    
+    int obtener_id_plataforma(String nombre_categoria);
     int obtener_id_categoria(String nombre_categoria);
     
     
@@ -33,7 +34,8 @@ public interface InterfacePlataforma {
     boolean Alta_Plataforma (Plataforma p );
     boolean Agregar_espectaculo_a_paquete (int idEspectaculo, String nomPaquete );
     ArrayList<String> obtener_espectaculos_de_paquete(int idPaquete);
-    int obtener_idespectaculo (String nomespe);
+    int obtener_idespectaculo (String nomespe, String plataforma);
+    int obtener_idespectaculo (String nomespe); // esto no esta bien
     int obtener_idfuncion(String nomfunc);
     int obtener_idartista(String nickname_artista);
     

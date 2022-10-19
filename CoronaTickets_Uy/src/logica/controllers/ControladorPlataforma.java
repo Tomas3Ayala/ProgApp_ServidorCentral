@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +52,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
          
         try {
-            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `categoria`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
@@ -59,12 +60,11 @@ public class ControladorPlataforma implements InterfacePlataforma {
             query.setInt(5, espectaculo.getMax_espectador());
             query.setString(6, espectaculo.getUrl());
             query.setInt(7, espectaculo.getCosto());
-            query.setDate(8, (Date) espectaculo.getFecha_registro());
+            query.setDate(8, new java.sql.Date(espectaculo.getFecha_registro().getTime()));
             query.setInt(9, espectaculo.getId_artista());
             query.setInt(10, id_Plataforma);
             query.setString(11, espectaculo.getEstado().toString());
-            query.setString(12, espectaculo.getCategoria());
-            query.setBytes(13, imagen);
+            query.setBytes(12, imagen);
             query.executeUpdate();
             // System.out.println("FECHA: " + nacimiento);
             
@@ -72,8 +72,9 @@ public class ControladorPlataforma implements InterfacePlataforma {
 
         } catch (SQLException ex) {
             if (ex.getErrorCode() == 1062){ // 1062 es un error de dato unico duplicado 
-                JOptionPane.showMessageDialog(null, "Ya existe un Espectaculo "+espectaculo.getNombre()+" para la plataforma "+espectaculo.getPlataforma()+"");
-                return false;}
+//                JOptionPane.showMessageDialog(null, "Ya existe un Espectaculo "+espectaculo.getNombre()+" para la plataforma "+espectaculo.getPlataforma()+"");
+                return false;
+            }
             else
                 Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -287,7 +288,28 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
         return paquete;
     }
- @Override
+
+    @Override
+    public int obtener_idespectaculo(String nomespe, String plataforma) {
+        int idplata = obtener_id_plataforma(plataforma);
+        
+        int idespe = -1;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM espectaculo WHERE nombre ='" + nomespe + "' AND id_plataforma=?");
+            query.setInt(1, idplata);
+            ResultSet idespe_set = query.executeQuery();
+            idespe_set.next();
+            idespe = idespe_set.getInt("id");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return idespe;
+    }
+    
+    @Override
     public int obtener_idespectaculo (String nomespe){
        int idespe = 0;
        Connection conn = ConexionDB.getInstance().getConnection();
@@ -500,6 +522,21 @@ public class ControladorPlataforma implements InterfacePlataforma {
 
     }*/
 
+    @Override
+    public int obtener_id_plataforma(String nombre_plataforma) {
+        int idplataforma = 0;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma WHERE nombre ='" + nombre_plataforma + "'");
+            ResultSet idplataforma_set = query.executeQuery();
+            idplataforma_set.next();
+            idplataforma = idplataforma_set.getInt("id");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return idplataforma;
+    }
+    
     @Override
     public int obtener_id_categoria(String nombre_categoria) {
        int idcategoria = 0;
