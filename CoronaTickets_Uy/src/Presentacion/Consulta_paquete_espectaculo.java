@@ -185,7 +185,7 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 lista.add("Descuento: "+descuento);
                 String id =  String.valueOf(paquete.getId());
                 lista.add("ID: "+id);
-                lista.add("Categorias: ");
+                lista.add("Categorias: " );
                for (int i = 0; i < espectaculos.size(); i++) {
                 int idespec = this.ICU.obtener_idespectaculo(espectaculos.get(i));
                 Espectaculo espectaculo = Fabrica.getInstance().getInstanceControladorEspectaculo().obtener_espectaculo(idespec);
@@ -194,7 +194,10 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
 //String cat= espectaculo.getCategoria();
                 boolean existe = lista.contains(cat);
                 if (!existe){
-                lista.add(espectaculo.getCategoria());
+                    for (int a = 0; a < cat.size(); a++){
+                        lista.add(cat.get(a));
+                    }
+                
                 }
             }
                 
@@ -234,7 +237,7 @@ public class Consulta_paquete_espectaculo extends javax.swing.JFrame {
                 String costo = String.valueOf(espectaculo.getCosto());//costo
                 listaEspectaculos.add("Costo: "+costo);
                 listaEspectaculos.add("Fecha de registro: "+espectaculo.getFecha_registro().toString());
-                listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
+                listaEspectaculos.add("Categoria: "+this.ICU.obtener_categorias_espectaculo(idespec));
                 String idPlataforma = String.valueOf(espectaculo.getPlataforma());//id de Plataforma
                 listaEspectaculos.add("Plataforma: "+idPlataforma);
                
