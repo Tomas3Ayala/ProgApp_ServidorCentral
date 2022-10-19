@@ -568,6 +568,24 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
 
     }
+    
+    @Override
+    public ArrayList<String> obtener_categorias_espectaculo(int idespec) {
+         ArrayList<String> categorias = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT c.nombre FROM espectaculo as e, categoria as c, categoria_espectaculo as ce where ce.id_espectaculo = e.id and ce.id_categoria = c.id and  ce.id_espectaculo = "+idespec+" ");
+            ResultSet categoria_set = query.executeQuery();
+            while (categoria_set.next()) 
+                
+                categorias.add(categoria_set.getString("nombre"));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return categorias;
+    }
 
 }
     

@@ -350,8 +350,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectaculos_set.getInt("costo"),
                         espectaculos_set.getDate("fecha_registro"),
                         espectaculos_set.getInt("id"),
-                        espectaculos_set.getInt("id_artista"),
-                        espectaculos_set.getString("categoria")
+                        espectaculos_set.getInt("id_artista")
+                        //espectaculos_set.getString("categoria")
                        
                 );
             }
@@ -423,5 +423,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }    }
+
+    
 
 }

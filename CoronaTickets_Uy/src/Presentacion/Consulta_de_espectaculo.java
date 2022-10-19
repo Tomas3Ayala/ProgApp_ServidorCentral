@@ -317,7 +317,9 @@ public class Consulta_de_espectaculo extends javax.swing.JFrame {
                 String costo = String.valueOf(espectaculo.getCosto());//costo
                 listaEspectaculos.add("Costo: "+costo);
                 listaEspectaculos.add("Fecha de registro: "+espectaculo.getFecha_registro().toString());
-                listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
+                listaEspectaculos.add("Categorias : "+this.ICU.obtener_categorias_espectaculo(idespec));
+                
+               // listaEspectaculos.add("Categoria: "+espectaculo.getCategoria());
                 String idPlataforma = String.valueOf(espectaculo.getPlataforma());//id de Plataforma
                 listaEspectaculos.add("Plataforma: "+idPlataforma);  
                 

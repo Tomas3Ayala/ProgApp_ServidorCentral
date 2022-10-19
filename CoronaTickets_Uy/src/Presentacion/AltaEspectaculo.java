@@ -23,6 +23,7 @@ import logica.Fabrica;
 import logica.clases.Artista;
 import java.sql.Date;
 import java.util.Arrays;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -38,9 +39,10 @@ import logica.interfaces.InterfacePlataforma;
  * @author 59892
  */
 public class AltaEspectaculo extends javax.swing.JFrame {
-
+ArrayList<String> listaCategorias = new ArrayList<>();
 
 private InterfacePlataforma ICU;
+DefaultListModel categorias = new DefaultListModel();
     /**
      * Creates new form AltaEspectaculo
      */
@@ -48,7 +50,7 @@ private InterfacePlataforma ICU;
         
         initComponents();
         this.ICU = Fabrica.getInstance().getInstanceControladorPlataforma();
-              
+        lista_categorias.setModel(categorias);      
         
           ArrayList<Artista> artistas = Fabrica.getInstance().getInstanceControladorPlataforma().obtener_artistas_disponibles();
          for (int i = 0; i<artistas.size(); i++ )
@@ -61,9 +63,9 @@ private InterfacePlataforma ICU;
             combobox_plataformas.addItem(plataforma);
         });
         
-        ArrayList<Categoria> categorias = Fabrica.getInstance().getInstanceControladorPlataforma().obtener_categorias();
+        ArrayList<Categoria> categoriass = Fabrica.getInstance().getInstanceControladorPlataforma().obtener_categorias();
 
-        categorias.forEach((categoria) -> {
+        categoriass.forEach((categoria) -> {
             comboCategoria.addItem(categoria.getNombre());
         });
         
@@ -108,6 +110,9 @@ private InterfacePlataforma ICU;
         jLabel11 = new javax.swing.JLabel();
         comboCategoria = new javax.swing.JComboBox<>();
         imagen = new javax.swing.JLabel();
+        btnagregar_categoria = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lista_categorias = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Alta de Espectaculo");
@@ -184,6 +189,15 @@ private InterfacePlataforma ICU;
             }
         });
 
+        btnagregar_categoria.setText("Agregar categoria");
+        btnagregar_categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregar_categoriaActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(lista_categorias);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -220,10 +234,6 @@ private InterfacePlataforma ICU;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(combobox_artista, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -244,7 +254,15 @@ private InterfacePlataforma ICU;
                                 .addGap(152, 152, 152)
                                 .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCrear)))
+                                .addComponent(btnCrear))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel11)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(90, 90, 90)
+                                    .addComponent(btnagregar_categoria))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -296,8 +314,11 @@ private InterfacePlataforma ICU;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                            .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnagregar_categoria))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancelar)
                             .addComponent(jButton1)
@@ -419,16 +440,18 @@ private InterfacePlataforma ICU;
         String fecha = ((JTextField) jDateFechaRegistro.getDateEditor().getUiComponent()).getText();
         EstadoEspectaculo estado = EstadoEspectaculo.INGRESADO;
        
-        Espectaculo es = new Espectaculo(plataforma,nombre,descripcion,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista, estado, categoria);
-       if (this.ICU.crear_Espectaculo(es, imageEspectaculo)){
-           int idespec = this.ICU.obtener_idespectaculo(nombre);
-           int idecatego = this.ICU.obtener_id_categoria(categoria);
-           if (this.ICU.insertar_en_categoria_espectaculo(idecatego, idespec)){
-               JOptionPane.showMessageDialog(this, "Se agrego el espectaculo correctamente");
-           } else {
-               JOptionPane.showMessageDialog(this, "Hubo un problema en agregar en categoria espectaculo");
-           }
-       }else {
+        Espectaculo es = new Espectaculo(plataforma,nombre,descripcion,duracion,min_espectadores,max_espectadores,url,costo,Date.valueOf(fecha), idArtista, estado);
+        if (this.ICU.crear_Espectaculo(es, imageEspectaculo)) {
+            int idespec = this.ICU.obtener_idespectaculo(nombre);
+            for (int i = 0; i < listaCategorias.size(); i++) {
+                String nomCategoria = listaCategorias.get(i);
+                int idCategoria = this.ICU.obtener_id_categoria(nomCategoria);
+                this.ICU.insertar_en_categoria_espectaculo(idCategoria, idespec);
+            }
+            //int idecatego = this.ICU.obtener_id_categoria(categoria);
+            JOptionPane.showMessageDialog(this, "Se agrego el espectaculo correctamente");
+        }
+       else {
            JOptionPane.showMessageDialog(this, "Hubo un problema en agregar el espectaculo");
        }
        
@@ -456,6 +479,18 @@ private InterfacePlataforma ICU;
             }
         }
     }//GEN-LAST:event_imagenMouseReleased
+
+    private void btnagregar_categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregar_categoriaActionPerformed
+       String categorias_string = comboCategoria.getSelectedItem().toString();
+        boolean existe = listaCategorias.contains(categorias_string);
+        if(!existe){
+        listaCategorias.add(categorias_string);
+        categorias.addElement(categorias_string);
+       // JOptionPane.showMessageDialog(null, "La categoria se agrego a la lista");
+        }else{
+            JOptionPane.showMessageDialog(null, "La categoria ya se encuentra en la lista");
+        }
+    }//GEN-LAST:event_btnagregar_categoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -495,6 +530,7 @@ private InterfacePlataforma ICU;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnagregar_categoria;
     private javax.swing.JComboBox<String> comboCategoria;
     private javax.swing.JComboBox<String> combobox_artista;
     private javax.swing.JComboBox<String> combobox_plataformas;
@@ -512,6 +548,8 @@ private InterfacePlataforma ICU;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> lista_categorias;
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtDuracion;
