@@ -365,7 +365,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
     public boolean chequear_si_nombre_de_espectaculo_esta_repetido_para_cierta_plataforma(String espectaculo, String plataforma) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo as e, plataforma as p WHERE p.id=e.id AND p.nombre=? AND e.nombre=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo as e, plataforma as p WHERE p.id=e.id_plataforma AND p.nombre=? AND e.nombre=?");
             query.setString(1, plataforma);
             query.setString(2, espectaculo);
             ResultSet espectaculos_set = query.executeQuery();
