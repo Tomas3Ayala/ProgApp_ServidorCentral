@@ -424,6 +424,39 @@ Connection conn = ConexionDB.getInstance().getConnection();
             return false;
         }    }
 
+    @Override
+    public boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion) {
+         Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion as f WHERE f.nombre=?");
+            query.setString(1, nomfuncion);
+            ResultSet espectaculos_set = query.executeQuery();
+
+            while (espectaculos_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public ArrayList<String> obtener_espectaculos_aceptados() {
+         ArrayList<String> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.nombre, e.id FROM espectaculo as e where e.estado = 'ACEPTADO'");
+            ResultSet espectaculos_set = query.executeQuery();
+             while (espectaculos_set.next())
+                espectaculos.add(espectaculos_set.getString("nombre"));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return espectaculos;
+    }
+
     
 
 }

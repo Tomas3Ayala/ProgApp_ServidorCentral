@@ -106,9 +106,10 @@ public class ControladorPlataforma implements InterfacePlataforma {
      try {
          PreparedStatement query = conn.prepareStatement("INSERT INTO `funcion` (`nombre`, `fecha`, `hora_inicio`, `fecha_registro`, `id_espectaculo`, `imagen`) VALUES (?,?,?,?,?,?)");
          query.setString(1, f.getNombre());
-         query.setDate(2, (Date) f.getFecha());
+         
+         query.setDate(2, new java.sql.Date(f.getFecha().getTime()));
          query.setInt(3, f.getHora_inicio());
-         query.setDate(4, (Date) f.getFecha_registro());
+         query.setDate(4, new java.sql.Date(f.getFecha_registro().getTime()));
          query.setInt(5, f.getId_espectaculo());
          query.setBytes(6, imagen);
          query.executeUpdate();
@@ -120,10 +121,12 @@ public class ControladorPlataforma implements InterfacePlataforma {
                 
                 return false;}
             else
-                Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
      return true;
     }
+    
  @Override
    public boolean insertar_Artista_Invitado ( int idartista, int idfuncion){
        Connection conn = ConexionDB.getInstance().getConnection();

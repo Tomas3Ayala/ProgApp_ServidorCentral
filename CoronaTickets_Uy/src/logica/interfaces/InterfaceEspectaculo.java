@@ -14,6 +14,7 @@ public interface InterfaceEspectaculo {
     ArrayList<Espectaculo> obtener_espectaculos_con_plataforma(String plataforma);
     ArrayList<Funcion> obtener_funciones_de_espectaculo(int id);
     ArrayList<Espectaculo> obtener_espectaculos_ingresados();
+    ArrayList<String> obtener_espectaculos_aceptados();
     boolean aceptar_espectaculo (int id);
     boolean rechazar_espectaculo (int id);
 
@@ -36,4 +37,5 @@ public interface InterfaceEspectaculo {
     Espectaculo obtener_espectaculo(int id);
     
     boolean chequear_si_nombre_de_espectaculo_esta_repetido_para_cierta_plataforma(String espectaculo, String plataforma);
+    boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion);
 }
