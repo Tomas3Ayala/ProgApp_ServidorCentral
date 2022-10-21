@@ -425,7 +425,6 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }    }
 
     @Override
-
     public boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion) {
          Connection conn = ConexionDB.getInstance().getConnection();
         try {
@@ -433,8 +432,15 @@ Connection conn = ConexionDB.getInstance().getConnection();
             query.setString(1, nomfuncion);
             ResultSet espectaculos_set = query.executeQuery();
 
-            while (espectaculos_set.next())
+            if (espectaculos_set.next())
+                return true;
+                } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
+    @Override
     public boolean existe_id_de_espectaculo(int id_espec) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
@@ -452,8 +458,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
     }
 
     @Override
-
-    public ArrayList<String> obtener_espectaculos_aceptados() {
+     public ArrayList<String> obtener_espectaculos_aceptados() {
          ArrayList<String> espectaculos = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
@@ -461,8 +466,14 @@ Connection conn = ConexionDB.getInstance().getConnection();
             ResultSet espectaculos_set = query.executeQuery();
              while (espectaculos_set.next())
                 espectaculos.add(espectaculos_set.getString("nombre"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return espectaculos;
+     }
             
 
+    @Override
     public boolean existe_id_de_funcion(int id_func) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
@@ -527,18 +538,12 @@ Connection conn = ConexionDB.getInstance().getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-        return espectaculos;
-    }
-
-
         return paquetes;
     }
 
     @Override
     public Paquete obtener_info_paquete(String nombre) {
-        Paquete paquete = null;
+         Paquete paquete = null;
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
             PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
@@ -565,7 +570,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
 
     @Override
     public boolean esta_el_espectaculo_lleno(int id_espec) {
-        // "SELECT COUNT(*) FROM registro_funcion WHERE id_funcion=funcion.id"
+         // "SELECT COUNT(*) FROM registro_funcion WHERE id_funcion=funcion.id"
         Espectaculo espectaculo = obtener_espectaculo(id_espec);
         int registros = -1;
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -584,18 +589,18 @@ Connection conn = ConexionDB.getInstance().getConnection();
 
     @Override
     public boolean existe_paquete(String paquete) {
-        Connection conn = ConexionDB.getInstance().getConnection();
-        try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
-            query.setString(1, paquete);
-            ResultSet set = query.executeQuery();
+    Connection conn = ConexionDB.getInstance().getConnection();
+           try {
+               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+               query.setString(1, paquete);
+               ResultSet set = query.executeQuery();
 
-            if (set.next())
-                return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+               if (set.next())
+                   return true;
+           } catch (SQLException ex) {
+               Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           return false;  
     }
 
     @Override
@@ -613,7 +618,4 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }
         return false;
     }
-
-    
-
 }
