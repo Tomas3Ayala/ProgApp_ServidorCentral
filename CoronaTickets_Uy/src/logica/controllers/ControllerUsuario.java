@@ -424,5 +424,22 @@ public class ControllerUsuario implements InterfaceUsuario{
         }
         return espectaculos;
     }
+
+    @Override
+    public boolean esta_usuario_registrado_a_funcion(int id_user, int id_func) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM registro_funcion as r WHERE r.id_espectador=? AND r.id_funcion=?");
+            query.setInt(1, id_user);
+            query.setInt(2, id_func);
+            ResultSet set = query.executeQuery();
+            if (set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     
 }

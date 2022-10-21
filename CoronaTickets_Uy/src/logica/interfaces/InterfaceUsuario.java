@@ -31,4 +31,6 @@ public interface InterfaceUsuario {
     
     ArrayList<Funcion> obtener_funciones_a_las_que_se_registro_espectador(int id);
     ArrayList<Espectaculo> obtener_espectaculos_organizados_por_artista(int id);
+    
+    boolean esta_usuario_registrado_a_funcion(int id_user, int id_func);
 }

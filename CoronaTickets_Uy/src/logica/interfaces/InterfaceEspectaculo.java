@@ -36,4 +36,21 @@ public interface InterfaceEspectaculo {
     Espectaculo obtener_espectaculo(int id);
     
     boolean chequear_si_nombre_de_espectaculo_esta_repetido_para_cierta_plataforma(String espectaculo, String plataforma);
+
+    public boolean existe_id_de_espectaculo(int id_espec);
+    public boolean existe_id_de_funcion(int id_func);
+    public boolean es_un_espectaculo_aceptado(int id_espec);
+    public boolean es_funcion_de_espectaculo(int id_func, int id_espec);
+    
+    public ArrayList<String> obtener_nombres_de_paquetes_asociados_a_espectaculo(int id_espec);
+    
+    public Paquete obtener_info_paquete(String nombre);
+
+    public boolean esta_el_espectaculo_lleno(int id_espec);
+
+    public boolean existe_paquete(String paquete);
+
+    public boolean chequear_canje(int id_user, int canje);
+    
+
 }

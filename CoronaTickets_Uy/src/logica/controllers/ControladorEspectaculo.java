@@ -247,7 +247,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
         try {
             PreparedStatement query = conn.prepareStatement("SELECT max_espectador FROM espectaculo as e WHERE e.id=" + Integer.toString(id));
             ResultSet cant_max_set = query.executeQuery();
-            cant_max_set.next(); // se asume que solo hay un costo en la tabla
+            cant_max_set.next(); // se asume que solo hay un espectaculo en la tabla
             cant_max = cant_max_set.getInt("max_espectador");
             
         } catch (SQLException ex) {
@@ -370,7 +370,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             query.setString(2, espectaculo);
             ResultSet espectaculos_set = query.executeQuery();
 
-            while (espectaculos_set.next())
+            if (espectaculos_set.next())
                 return true;
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
@@ -424,6 +424,167 @@ Connection conn = ConexionDB.getInstance().getConnection();
             return false;
         }    }
 
+    @Override
+    public boolean existe_id_de_espectaculo(int id_espec) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo WHERE id=?");
+            query.setInt(1, id_espec);
+            ResultSet espectaculos_set = query.executeQuery();
+
+            if (espectaculos_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean existe_id_de_funcion(int id_func) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion WHERE id=?");
+            query.setInt(1, id_func);
+            ResultSet funciones_set = query.executeQuery();
+
+            if (funciones_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean es_un_espectaculo_aceptado(int id_espec) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo WHERE id=? AND estado='ACEPTADO'");
+            query.setInt(1, id_espec);
+            ResultSet espectaculos_set = query.executeQuery();
+
+            if (espectaculos_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean es_funcion_de_espectaculo(int id_func, int id_espec) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion WHERE id=? AND id_espectaculo=?");
+            query.setInt(1, id_func);
+            query.setInt(2, id_espec);
+            ResultSet funciones_set = query.executeQuery();
+
+            if (funciones_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public ArrayList<String> obtener_nombres_de_paquetes_asociados_a_espectaculo(int id_espec) {
+        ArrayList<String> paquetes = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT p.nombre FROM paquete_espectaculo as pe, paquete as p where pe.id_espectaculo=? AND p.id=pe.id_paquete");
+            query.setInt(1, id_espec);
+            ResultSet paquetes_set = query.executeQuery();
+            while (paquetes_set.next()) {
+                paquetes.add(paquetes_set.getString("nombre"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return paquetes;
+    }
+
+    @Override
+    public Paquete obtener_info_paquete(String nombre) {
+        Paquete paquete = null;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+            query.setString(1, nombre);
+            ResultSet paquetes_set = query.executeQuery();
+            while (paquetes_set.next()) {
+                paquete = new Paquete(
+                    paquetes_set.getString("nombre"),
+                    paquetes_set.getString("descripcion"),
+                    paquetes_set.getDate("fecha_inicio"),
+                    paquetes_set.getDate("fecha_fin"),
+                    paquetes_set.getInt("descuento"),
+                    paquetes_set.getInt("id")
+                    // String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int descuento, int id
+                );
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return paquete;
+    }
+
+    @Override
+    public boolean esta_el_espectaculo_lleno(int id_espec) {
+        // "SELECT COUNT(*) FROM registro_funcion WHERE id_funcion=funcion.id"
+        Espectaculo espectaculo = obtener_espectaculo(id_espec);
+        int registros = -1;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT COUNT(*) as suma FROM registro_funcion as r, funcion as f WHERE r.id_funcion=f.id AND f.id_espectaculo=?");
+            query.setInt(1, id_espec);
+            ResultSet set = query.executeQuery();
+            set.next();
+            registros = set.getInt("suma");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return registros >= espectaculo.getMax_espectador();
+    }
+
+    @Override
+    public boolean existe_paquete(String paquete) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+            query.setString(1, paquete);
+            ResultSet set = query.executeQuery();
+
+            if (set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean chequear_canje(int id_user, int canje) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM registro_funcion as r WHERE r.id_espectador=? AND r.id_funcion=? AND NOT r.canjeado");
+            query.setInt(1, id_user);
+            query.setInt(2, canje);
+            ResultSet set = query.executeQuery();
+            if (set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     
 
 }
