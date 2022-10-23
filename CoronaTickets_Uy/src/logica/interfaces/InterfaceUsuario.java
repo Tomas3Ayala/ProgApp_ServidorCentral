@@ -21,6 +21,7 @@ public interface InterfaceUsuario {
     
     Espectador obtener_espectador_de_nickname(String nickname); // retorna siempre que halla un usuario con ese nickname, independientemente de si es un espectador (si no hay, lanza excepcion)
     Artista obtener_artista_de_nickname(String nickname); // retorna null si el usuario con ese nickname no es artista
+    Artista obtener_artista_de_id(int id); // retorna null si el usuario con ese nickname no es artista
     
     ArrayList<String> obtener_nicknames_de_usuarios();
     boolean existe_nickname_de_usuario(String nickname);
@@ -33,4 +34,6 @@ public interface InterfaceUsuario {
     ArrayList<Espectaculo> obtener_espectaculos_organizados_por_artista(int id);
     
     boolean esta_usuario_registrado_a_funcion(int id_user, int id_func);
+
+    public ArrayList<Artista> obtener_artistas_invitados(int id_func);
 }

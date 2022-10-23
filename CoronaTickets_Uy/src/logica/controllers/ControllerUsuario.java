@@ -294,6 +294,54 @@ public class ControllerUsuario implements InterfaceUsuario{
         }
         return artista;
     }
+
+    @Override
+    public Artista obtener_artista_de_id(int id) {
+        Artista artista = null;
+
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.id=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next()) {
+                artista = new Artista(
+                    "",
+                    "",
+                    "",
+                    usuarios_set.getString("nickname"),
+                    usuarios_set.getString("nombre"),
+                    usuarios_set.getString("apellido"),
+                    usuarios_set.getString("correo"),
+                    usuarios_set.getDate("nacimiento"),
+                    usuarios_set.getInt("id"),
+                    usuarios_set.getString("contrasenia")
+                );
+            }
+            else
+                return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            return artista;
+        }
+
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM artista as a WHERE a.id=?");
+            query.setInt(1, artista.getId());
+            ResultSet artistas_set = query.executeQuery();
+            if (artistas_set.next()) {
+                artista.setDescripcion(artistas_set.getString("descripcion"));
+                artista.setBiografia(artistas_set.getString("biografia"));
+                artista.setSitio_web(artistas_set.getString("sitio_web"));
+            }
+            else
+                return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+            return artista;
+        }
+        return artista;
+    }
     
     @Override
     public ArrayList<String> obtener_nicknames_de_usuarios() {
@@ -439,6 +487,22 @@ public class ControllerUsuario implements InterfaceUsuario{
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Artista> obtener_artistas_invitados(int id_func) {
+        ArrayList<Artista> artistas = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id_artista FROM `artista_invitado` WHERE id_funcion=?");
+            query.setInt(1, id_func);
+            ResultSet set = query.executeQuery();
+            while (set.next())
+                artistas.add(obtener_artista_de_id(set.getInt("id_artista")));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return artistas;
     }
 
     

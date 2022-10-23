@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.clases.Artista;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
 import logica.clases.Funcion;
 import logica.clases.Paquete;
 import logica.clases.Registro_funcion;
+import logica.enums.EstadoEspectaculo;
 import logica.interfaces.InterfaceEspectaculo;
 
 public class ControladorEspectaculo implements InterfaceEspectaculo{
@@ -339,6 +341,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             ResultSet espectaculos_set = query.executeQuery();
 
             while (espectaculos_set.next()) {
+                // String plataforma, String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id, int id_artista, EstadoEspectaculo estado
+                String est = espectaculos_set.getString("estado");
                 espectaculo = new Espectaculo(
                         espectaculos_set.getString("plataforma"),
                         espectaculos_set.getString("nombre"),
@@ -350,8 +354,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
                         espectaculos_set.getInt("costo"),
                         espectaculos_set.getDate("fecha_registro"),
                         espectaculos_set.getInt("id"),
-                        espectaculos_set.getInt("id_artista")
-                        //espectaculos_set.getString("categoria")
+                        espectaculos_set.getInt("id_artista"),
+                        EstadoEspectaculo.valueOf(est)
                        
                 );
             }
@@ -618,4 +622,36 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }
         return false;
     }
+
+    @Override
+    public byte[] obtener_imagen_funcion(int id_func) {
+        Connection con = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM funcion WHERE id=?");
+            query.setInt(1, id_func);
+            ResultSet set = query.executeQuery();
+            if (set.next()) {
+                return set.getBytes("imagen");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Espectaculo obtener_espectaculo_de_funcion(int id_func) {
+        Connection con = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = con.prepareStatement("SELECT id_espectaculo FROM funcion WHERE id=?");
+            query.setInt(1, id_func);
+            ResultSet set = query.executeQuery();
+            if (set.next())
+                return obtener_espectaculo(set.getInt("id_espectaculo"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }

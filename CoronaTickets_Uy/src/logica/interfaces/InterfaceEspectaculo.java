@@ -1,6 +1,7 @@
 package logica.interfaces;
 
 import java.util.ArrayList;
+import logica.clases.Artista;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
@@ -56,4 +57,9 @@ public interface InterfaceEspectaculo {
 
     public boolean chequear_canje(int id_user, int canje);
     
+    public byte[] obtener_imagen_funcion(int id_func);
+    
+    public Espectaculo obtener_espectaculo_de_funcion(int id_func);
+    
+
 }
