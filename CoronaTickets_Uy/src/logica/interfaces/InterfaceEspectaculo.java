@@ -60,6 +60,10 @@ public interface InterfaceEspectaculo {
     public byte[] obtener_imagen_funcion(int id_func);
     
     public Espectaculo obtener_espectaculo_de_funcion(int id_func);
+
+    public byte[] obtener_imagen_espectaculo(int id_espec);
+
+    public byte[] obtener_imagen_paquete(String paquete);
     
 
 }

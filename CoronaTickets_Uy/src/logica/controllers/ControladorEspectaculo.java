@@ -640,6 +640,22 @@ Connection conn = ConexionDB.getInstance().getConnection();
     }
 
     @Override
+    public byte[] obtener_imagen_espectaculo(int id_espec) {
+        Connection con = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM espectaculo WHERE id=?");
+            query.setInt(1, id_espec);
+            ResultSet set = query.executeQuery();
+            if (set.next()) {
+                return set.getBytes("imagen");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
     public Espectaculo obtener_espectaculo_de_funcion(int id_func) {
         Connection con = ConexionDB.getInstance().getConnection();
         try {
@@ -648,6 +664,22 @@ Connection conn = ConexionDB.getInstance().getConnection();
             ResultSet set = query.executeQuery();
             if (set.next())
                 return obtener_espectaculo(set.getInt("id_espectaculo"));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public byte[] obtener_imagen_paquete(String paquete) {
+        Connection con = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM paquete WHERE nombre=?");
+            query.setString(1, paquete);
+            ResultSet set = query.executeQuery();
+            if (set.next()) {
+                return set.getBytes("imagen");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
