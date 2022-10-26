@@ -43,7 +43,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         String nombrePlataforma = espectaculo.getPlataforma();
         int id_Plataforma = 0;
          try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre='" + nombrePlataforma + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre=BINARY '" + nombrePlataforma + "'");
             ResultSet plataformas_set = query.executeQuery();
             plataformas_set.next();
             id_Plataforma = plataformas_set.getInt("id");
@@ -242,7 +242,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
      int idpaquete = 0;
      Connection conn = ConexionDB.getInstance().getConnection();
      try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete WHERE nombre='" + nompaquete + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete WHERE nombre=BINARY '" + nompaquete + "'");
             ResultSet paquete_set = query.executeQuery();
             paquete_set.next();
             idpaquete = paquete_set.getInt("id");
@@ -299,7 +299,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         int idespe = -1;
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM espectaculo WHERE nombre ='" + nomespe + "' AND id_plataforma=?");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM espectaculo WHERE nombre =BINARY '" + nomespe + "' AND id_plataforma=?");
             query.setInt(1, idplata);
             ResultSet idespe_set = query.executeQuery();
             idespe_set.next();
@@ -317,7 +317,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
        int idespe = 0;
        Connection conn = ConexionDB.getInstance().getConnection();
        try {
-         PreparedStatement query = conn.prepareStatement("SELECT id FROM espectaculo WHERE nombre ='" + nomespe + "'");
+         PreparedStatement query = conn.prepareStatement("SELECT id FROM espectaculo WHERE nombre =BINARY '" + nomespe + "'");
          ResultSet idespe_set = query.executeQuery();
          idespe_set.next();
             idespe = idespe_set.getInt("id");         
@@ -332,7 +332,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
          int idartista = 0;
         Connection conn = ConexionDB.getInstance().getConnection();
          try {
-         PreparedStatement query = conn.prepareStatement("SELECT id FROM usuario WHERE nickname ='" + nickname_artista + "'");
+         PreparedStatement query = conn.prepareStatement("SELECT id FROM usuario WHERE nickname =BINARY '" + nickname_artista + "'");
          ResultSet idartis_set = query.executeQuery();
          idartis_set.next();
             idartista = idartis_set.getInt("id");         
@@ -348,7 +348,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         int idfuncion = 0;
         Connection conn = ConexionDB.getInstance().getConnection();
          try {
-         PreparedStatement query = conn.prepareStatement("SELECT id FROM funcion WHERE nombre ='" + nomfunc + "'");
+         PreparedStatement query = conn.prepareStatement("SELECT id FROM funcion WHERE nombre =BINARY '" + nomfunc + "'");
          ResultSet idespe_set = query.executeQuery();
          idespe_set.next();
             idfuncion = idespe_set.getInt("id");         
@@ -368,7 +368,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         int id_paquete = -1;
         
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre='" + plataforma + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre=BINARY '" + plataforma + "'");
             ResultSet plataformas_set = query.executeQuery();
             plataformas_set.next();
             id_plataforma = plataformas_set.getInt("id");
@@ -377,7 +377,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete as p WHERE p.nombre='" + paquete + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete as p WHERE p.nombre=BINARY '" + paquete + "'");
             ResultSet paquetes_set = query.executeQuery();
             paquetes_set.next();
             id_paquete = paquetes_set.getInt("id");
@@ -419,7 +419,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         String nombreEspectaculo = "";
         //try para traer id paquete
          try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete WHERE nombre='" + nomPaquete + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM paquete WHERE nombre=BINARY '" + nomPaquete + "'");
             ResultSet paquete_set = query.executeQuery();
             paquete_set.next();
             id_paquete = paquete_set.getInt("id");
@@ -458,7 +458,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         Connection conn = ConexionDB.getInstance().getConnection();
 
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion WHERE nombre='" + nombre + "';");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion WHERE nombre=BINARY '" + nombre + "';");
             ResultSet funciones_set = query.executeQuery();
             while (funciones_set.next())
                 funcion = new Funcion(funciones_set.getString("nombre"), funciones_set.getDate("fecha"), funciones_set.getInt("hora_inicio"), funciones_set.getDate("fecha_registro"), funciones_set.getInt("id"), funciones_set.getInt("id_espectaculo"));
@@ -530,7 +530,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         int idplataforma = 0;
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma WHERE nombre ='" + nombre_plataforma + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma WHERE nombre =BINARY '" + nombre_plataforma + "'");
             ResultSet idplataforma_set = query.executeQuery();
             idplataforma_set.next();
             idplataforma = idplataforma_set.getInt("id");
@@ -545,7 +545,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
        int idcategoria = 0;
        Connection conn = ConexionDB.getInstance().getConnection();
        try {
-         PreparedStatement query = conn.prepareStatement("SELECT id FROM categoria WHERE nombre ='" + nombre_categoria + "'");
+         PreparedStatement query = conn.prepareStatement("SELECT id FROM categoria WHERE nombre =BINARY '" + nombre_categoria + "'");
          ResultSet idcategoria_set = query.executeQuery();
          idcategoria_set.next();
             idcategoria = idcategoria_set.getInt("id");         

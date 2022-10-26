@@ -51,7 +51,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
         int id_plataforma = -1;
         
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre='" + plataforma + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM plataforma as p WHERE p.nombre=BINARY '" + plataforma + "'");
             ResultSet plataformas_set = query.executeQuery();
             plataformas_set.next();
             id_plataforma = plataformas_set.getInt("id");
@@ -156,7 +156,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
         Connection conn = ConexionDB.getInstance().getConnection();
 
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u, espectador as e WHERE u.id=e.id and u.nickname='" + nick + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u, espectador as e WHERE u.id=e.id and u.nickname=BINARY '" + nick + "'");
             ResultSet espectadores_set = query.executeQuery();
             while (espectadores_set.next()) {
                 espectador = new Espectador(
@@ -369,7 +369,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
     public boolean chequear_si_nombre_de_espectaculo_esta_repetido_para_cierta_plataforma(String espectaculo, String plataforma) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo as e, plataforma as p WHERE p.id=e.id_plataforma AND p.nombre=? AND e.nombre=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectaculo as e, plataforma as p WHERE p.id=e.id_plataforma AND p.nombre=BINARY ? AND e.nombre=BINARY ?");
             query.setString(1, plataforma);
             query.setString(2, espectaculo);
             ResultSet espectaculos_set = query.executeQuery();
@@ -392,8 +392,8 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             while (espectaculos_set.next()) 
                 
                 espectaculos.add(new Espectaculo(
-                        espectaculos_set.getString("nombre"),
-                        espectaculos_set.getInt("id")        
+                    espectaculos_set.getString("nombre"),
+                    espectaculos_set.getInt("id")        
                 ));
             
         } catch (SQLException ex) {
@@ -432,7 +432,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
     public boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion) {
          Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion as f WHERE f.nombre=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM funcion as f WHERE f.nombre=BINARY ?");
             query.setString(1, nomfuncion);
             ResultSet espectaculos_set = query.executeQuery();
 
@@ -550,7 +550,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
          Paquete paquete = null;
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=BINARY ?");
             query.setString(1, nombre);
             ResultSet paquetes_set = query.executeQuery();
             while (paquetes_set.next()) {
@@ -595,7 +595,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
     public boolean existe_paquete(String paquete) {
     Connection conn = ConexionDB.getInstance().getConnection();
            try {
-               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=BINARY ?");
                query.setString(1, paquete);
                ResultSet set = query.executeQuery();
 
@@ -674,7 +674,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
     public byte[] obtener_imagen_paquete(String paquete) {
         Connection con = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = con.prepareStatement("SELECT imagen FROM paquete WHERE nombre=?");
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM paquete WHERE nombre=BINARY ?");
             query.setString(1, paquete);
             ResultSet set = query.executeQuery();
             if (set.next()) {
@@ -684,6 +684,22 @@ Connection conn = ConexionDB.getInstance().getConnection();
             Logger.getLogger(ControllerUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<Espectaculo> get_espectaculos_aceptados() {
+        ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.nombre, e.id FROM espectaculo as e where e.estado = 'ACEPTADO'");
+            ResultSet espectaculos_set = query.executeQuery();
+            while (espectaculos_set.next()) {
+                espectaculos.add(obtener_espectaculo(espectaculos_set.getInt("id")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return espectaculos;
     }
 
 }

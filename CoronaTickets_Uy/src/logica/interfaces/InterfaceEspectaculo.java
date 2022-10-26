@@ -16,6 +16,7 @@ public interface InterfaceEspectaculo {
     ArrayList<Funcion> obtener_funciones_de_espectaculo(int id);
     ArrayList<Espectaculo> obtener_espectaculos_ingresados();
     ArrayList<String> obtener_espectaculos_aceptados();
+    ArrayList<Espectaculo> get_espectaculos_aceptados();
     boolean aceptar_espectaculo (int id);
     boolean rechazar_espectaculo (int id);
 

@@ -28,7 +28,7 @@ public class ControllerUsuario implements InterfaceUsuario{
         Connection conn = ConexionDB.getInstance().getConnection();
         int id = -1;
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next())
@@ -56,7 +56,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public boolean chequear_nickname_repetido(String nickname) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname='" + nickname + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=BINARY '" + nickname + "'");
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next()) // si se encontro un usuario con ese nickname
                 return true;
@@ -70,7 +70,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public boolean chequear_correo_repetido(String correo) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.correo='" + correo + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.correo=BINARY '" + correo + "'");
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next()) // si se encontro un usuario con ese correo
                 return true;
@@ -101,7 +101,7 @@ public class ControllerUsuario implements InterfaceUsuario{
         int id_usuario = -1;
         
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT id FROM usuario as u WHERE u.nickname='" + usuario.getNickname() + "'");
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM usuario as u WHERE u.nickname=BINARY '" + usuario.getNickname() + "'");
             ResultSet usuarios_set = query.executeQuery();
             usuarios_set.next();
             id_usuario = usuarios_set.getInt("id");
@@ -228,7 +228,7 @@ public class ControllerUsuario implements InterfaceUsuario{
 
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
             usuarios_set.next();
@@ -253,7 +253,7 @@ public class ControllerUsuario implements InterfaceUsuario{
 
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=?");
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next()) {
@@ -363,7 +363,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public boolean existe_nickname_de_usuario(String nickname) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE nickname=?");
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next())
@@ -378,7 +378,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public boolean existe_correo_de_usuario(String correo) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=?");
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=BINARY ?");
             query.setString(1, correo);
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next())
@@ -393,7 +393,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public String obtener_nickname_de_correo(String correo) {
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=?");
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE correo=BINARY ?");
             query.setString(1, correo);
             ResultSet usuarios_set = query.executeQuery();
             if (usuarios_set.next())
@@ -408,7 +408,7 @@ public class ControllerUsuario implements InterfaceUsuario{
     public byte[] obtener_imagen_usuario_con_nickname(String nickname) {
         Connection con = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = con.prepareStatement("SELECT imagen FROM usuario WHERE nickname=?");
+            PreparedStatement query = con.prepareStatement("SELECT imagen FROM usuario WHERE nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet naves_set = query.executeQuery();
             if (naves_set.next()) {
