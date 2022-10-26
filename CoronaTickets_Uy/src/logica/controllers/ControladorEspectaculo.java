@@ -391,10 +391,7 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             ResultSet espectaculos_set = query.executeQuery();
             while (espectaculos_set.next()) 
                 
-                espectaculos.add(new Espectaculo(
-                    espectaculos_set.getString("nombre"),
-                    espectaculos_set.getInt("id")        
-                ));
+                espectaculos.add( obtener_espectaculo(espectaculos_set.getInt("id")) );
             
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
