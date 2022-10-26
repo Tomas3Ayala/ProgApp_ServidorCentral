@@ -429,6 +429,25 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }    }
 
     @Override
+    public ArrayList<Espectaculo> obtener_espectaculos_aceptados_de_paquete(int id_paqu) {
+        ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete_espectaculo WHERE id_paquete=?");
+            query.setInt(1, id_paqu);
+            ResultSet espectaculos_set = query.executeQuery();
+            while (espectaculos_set.next()) {
+                Espectaculo espectaculo = obtener_espectaculo(espectaculos_set.getInt("id_espectaculo"));
+                if (espectaculo.getEstado() == EstadoEspectaculo.ACEPTADO)
+                    espectaculos.add(espectaculo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return espectaculos;
+    }
+    
+    @Override
     public boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion) {
          Connection conn = ConexionDB.getInstance().getConnection();
         try {

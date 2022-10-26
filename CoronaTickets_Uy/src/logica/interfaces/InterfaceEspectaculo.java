@@ -19,6 +19,8 @@ public interface InterfaceEspectaculo {
     ArrayList<Espectaculo> get_espectaculos_aceptados();
     boolean aceptar_espectaculo (int id);
     boolean rechazar_espectaculo (int id);
+    
+    ArrayList<Espectaculo> obtener_espectaculos_aceptados_de_paquete(int id_paqu);
 
     
 
