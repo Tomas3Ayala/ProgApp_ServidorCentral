@@ -42,7 +42,7 @@ public interface InterfaceEspectaculo {
 
     boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion);
 
-
+    public boolean existe_id_de_paquete(int id_paquete);
     public boolean existe_id_de_espectaculo(int id_espec);
     public boolean existe_id_de_funcion(int id_func);
     public boolean es_un_espectaculo_aceptado(int id_espec);

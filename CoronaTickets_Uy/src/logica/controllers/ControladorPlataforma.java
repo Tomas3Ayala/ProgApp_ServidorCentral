@@ -508,7 +508,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
         return true;
     }
 
-  /*  @Override
+   /* @Override
     public ArrayList<String> obtener_categorias_en_paquete(int idPaquete) {
          ArrayList<String> categorias = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -588,6 +588,33 @@ public class ControladorPlataforma implements InterfacePlataforma {
         }
 
         return categorias;
+    }
+
+    @Override
+    public ArrayList<Espectaculo> obtener_espectaculos_sin_plataforma(int idPaquete) {
+         ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+       try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.nombre FROM espectaculo as e INNER JOIN plataforma on e.id_plataforma = plataforma.id where EXISTS (select * from paquete_espectaculo as pe where pe.id_paquete ='" + idPaquete + "' and e.id = pe.id_espectaculo)");
+            ResultSet espectaculos_set = query.executeQuery();
+             while (espectaculos_set.next()) {
+                espectaculos.add(new Espectaculo(
+                        espectaculos_set.getString("nombre"),
+                        espectaculos_set.getString("descripcion"),
+                        espectaculos_set.getInt("duracion"),
+                        espectaculos_set.getInt("min_espectador"),
+                        espectaculos_set.getInt("max_espectador"),
+                        espectaculos_set.getString("url"),
+                        espectaculos_set.getInt("costo"),
+                        espectaculos_set.getDate("fecha_registro"),
+                        espectaculos_set.getInt("id"),
+                        espectaculos_set.getInt("id_artista")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return espectaculos;
     }
 
 }

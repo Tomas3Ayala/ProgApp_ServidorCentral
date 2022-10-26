@@ -701,5 +701,21 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }
         return espectaculos;
     }
+    
+    @Override
+    public boolean existe_id_de_paquete(int id_paquete) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+           try {
+               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE id=?");
+               query.setInt(1, id_paquete);
+               ResultSet set = query.executeQuery();
+
+               if (set.next())
+                   return true;
+           } catch (SQLException ex) {
+               Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           return false;
+    }
 
 }

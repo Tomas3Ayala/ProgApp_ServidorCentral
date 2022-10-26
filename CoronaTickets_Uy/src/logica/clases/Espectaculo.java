@@ -35,6 +35,18 @@ public class Espectaculo {
         this.id = id;
         this.id_artista = id_artista;
     }
+    public Espectaculo( String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id, int id_artista) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.duracion = duracion;
+        this.min_espectador = min_espectador;
+        this.max_espectador = max_espectador;
+        this.url = url;
+        this.costo = costo;
+        this.fecha_registro = fecha_registro;
+        this.id = id;
+        this.id_artista = id_artista;
+    }
     public Espectaculo(String plataforma, String nombre, String descripcion, int duracion, int min_espectador, int max_espectador, String url, int costo, Date fecha_registro, int id, int id_artista, String categoria) {
         this.plataforma = plataforma;
         this.nombre = nombre;

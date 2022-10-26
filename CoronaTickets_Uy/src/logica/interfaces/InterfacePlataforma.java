@@ -36,6 +36,7 @@ public interface InterfacePlataforma {
     boolean Alta_Plataforma (Plataforma p );
     boolean Agregar_espectaculo_a_paquete (int idEspectaculo, String nomPaquete );
     ArrayList<String> obtener_espectaculos_de_paquete(int idPaquete);
+    ArrayList<Espectaculo> obtener_espectaculos_sin_plataforma(int idPaquete);
     int obtener_idespectaculo (String nomespe, String plataforma);
     int obtener_idespectaculo (String nomespe); // esto no esta bien
     int obtener_idfuncion(String nomfunc);
@@ -46,7 +47,7 @@ public interface InterfacePlataforma {
     ArrayList<Paquete> obtener_paquetes();
     ArrayList<Paquete> obtener_paquetes_de_plataforma(int idplata);
     Paquete obtener_info_paquetes (int idpaquete);
-    //ArrayList<String> obtener_categorias_en_paquete(int idPaquete);
+   // ArrayList<String> obtener_categorias_en_paquete(int idPaquete);
     ArrayList<Espectaculo> obtener_espectaculos_plataforma_quenoformanparte_paquete(String plataforma, String paquete);
     
     Funcion obtener_funcion_con_nombre(String nombre);
