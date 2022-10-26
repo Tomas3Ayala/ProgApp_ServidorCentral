@@ -690,7 +690,7 @@ Connection conn = ConexionDB.getInstance().getConnection();
     public boolean existe_id_de_paquete(int id_paquete) {
         Connection conn = ConexionDB.getInstance().getConnection();
            try {
-               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE nombre=?");
+               PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete WHERE id=?");
                query.setInt(1, id_paquete);
                ResultSet set = query.executeQuery();
 
