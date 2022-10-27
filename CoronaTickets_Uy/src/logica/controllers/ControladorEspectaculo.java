@@ -430,11 +430,30 @@ Connection conn = ConexionDB.getInstance().getConnection();
         ArrayList<Espectaculo> espectaculos = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
         try {
-            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete_espectaculo WHERE id_paquete=?");
+            PreparedStatement query = conn.prepareStatement("SELECT DISTINCT id_espectaculo FROM paquete_espectaculo WHERE id_paquete=?");
             query.setInt(1, id_paqu);
             ResultSet espectaculos_set = query.executeQuery();
             while (espectaculos_set.next()) {
                 Espectaculo espectaculo = obtener_espectaculo(espectaculos_set.getInt("id_espectaculo"));
+                if (espectaculo.getEstado() == EstadoEspectaculo.ACEPTADO)
+                    espectaculos.add(espectaculo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return espectaculos;
+    }
+
+    @Override
+    public ArrayList<Espectaculo> obtener_espectaculos_aceptados_no_de_paquete(int id_paqu) {
+        ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT e.id FROM espectaculo as e WHERE e.id NOT IN (SELECT p.id_espectaculo FROM paquete_espectaculo as p WHERE p.id_paquete=?)");
+            query.setInt(1, id_paqu);
+            ResultSet espectaculos_set = query.executeQuery();
+            while (espectaculos_set.next()) {
+                Espectaculo espectaculo = obtener_espectaculo(espectaculos_set.getInt("e.id"));
                 if (espectaculo.getEstado() == EstadoEspectaculo.ACEPTADO)
                     espectaculos.add(espectaculo);
             }
