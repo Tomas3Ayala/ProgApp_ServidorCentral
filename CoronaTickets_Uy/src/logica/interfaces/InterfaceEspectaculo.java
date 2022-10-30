@@ -15,6 +15,7 @@ public interface InterfaceEspectaculo {
     ArrayList<Espectaculo> obtener_espectaculos_con_plataforma(String plataforma);
     ArrayList<Funcion> obtener_funciones_de_espectaculo(int id);
     ArrayList<Espectaculo> obtener_espectaculos_ingresados();
+    ArrayList<Espectaculo> obtener_espectaculos_de_artista(String nickname);
     ArrayList<String> obtener_espectaculos_aceptados();
     ArrayList<Espectaculo> get_espectaculos_aceptados();
     boolean aceptar_espectaculo (int id);
@@ -26,6 +27,7 @@ public interface InterfaceEspectaculo {
     
 
     ArrayList<Espectador> obtener_espectadores();
+    ArrayList<Registro_funcion> obtener_todos_los_registros_de_espectador(int id);
     ArrayList<Registro_funcion> obtener_registros_de_espectador(int id);
     Espectador obtener_espectador_de_nickname(String nombre);
     Funcion obtener_funcion_por_id(int id);
@@ -68,6 +70,8 @@ public interface InterfaceEspectaculo {
     public byte[] obtener_imagen_espectaculo(int id_espec);
 
     public byte[] obtener_imagen_paquete(String paquete);
+    
+    public ArrayList<Paquete> obtener_paquetes_comprados_por_espectador(String nickname);
     
 
 }
