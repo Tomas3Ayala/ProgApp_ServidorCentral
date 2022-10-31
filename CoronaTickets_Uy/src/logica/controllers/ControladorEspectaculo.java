@@ -130,6 +130,29 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
     }
 
     @Override
+    public ArrayList<Registro_funcion> obtener_todos_los_registros_de_espectador(int id) { // registros aun no canjeados
+        ArrayList<Registro_funcion> registros  = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM espectador as e, registro_funcion as r WHERE e.id=r.id_espectador AND e.id=?");
+            query.setInt(1, id);
+            ResultSet registros_set = query.executeQuery();
+            while (registros_set.next()) {
+                registros.add(new Registro_funcion(
+                        registros_set.getDate("fecha_registro"),
+                        registros_set.getInt("costo"),
+                        registros_set.getInt("id_funcion"),
+                        registros_set.getInt("id_espectador")
+                ));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return registros;
+    }
+    
+    @Override
     public ArrayList<Registro_funcion> obtener_registros_de_espectador(int id) { // registros aun no canjeados
         ArrayList<Registro_funcion> registros  = new ArrayList<>();
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -416,6 +439,24 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             
         } catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return espectaculos;
+    }
+
+    @Override
+    public ArrayList<Espectaculo> obtener_espectaculos_de_artista(String nickname) {
+        ArrayList<Espectaculo> espectaculos = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+           PreparedStatement query = conn.prepareStatement("SELECT e.id FROM espectaculo as e, usuario as u where e.id_artista=u.id AND u.nickname=?");
+           query.setString(1, nickname);
+           ResultSet espectaculos_set = query.executeQuery();
+           while (espectaculos_set.next()) 
+               espectaculos.add( obtener_espectaculo(espectaculos_set.getInt("e.id")) );
+
+        } catch (SQLException ex) {
+           Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return espectaculos;
@@ -772,6 +813,32 @@ Connection conn = ConexionDB.getInstance().getConnection();
                Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
            }
            return false;
+    }
+    
+    @Override
+    public ArrayList<Paquete> obtener_paquetes_comprados_por_espectador(String nickname)
+    {
+        ArrayList<Paquete> paquetes = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete as p, compra_paquete cp, usuario as u WHERE p.id=cp.id_paquete AND cp.id_espectador=u.id AND u.nickname=?");
+            query.setString(1, nickname);
+            ResultSet set = query.executeQuery();
+            while (set.next())
+            {
+                boolean repetido = false;
+                String nombre = set.getString("p.nombre");
+                for (Paquete paquete : paquetes) {
+                    if (paquete.getNombre().equals(nombre))
+                        repetido = true;
+                }
+                if (!repetido)
+                    paquetes.add(obtener_info_paquete(nombre));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return paquetes;
     }
 
 }
