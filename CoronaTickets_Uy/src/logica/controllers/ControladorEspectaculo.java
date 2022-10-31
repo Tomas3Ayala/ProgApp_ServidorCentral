@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.clases.Artista;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
@@ -320,11 +321,15 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             query.setInt(5, paquete.getDescuento());
             query.setBytes(6, imagen);
             query.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Paquete creado con exito");
         } catch (SQLException ex) {
-            if (ex.getErrorCode() == 1062) // 1062 es un error de dato unico duplicado
+            if (ex.getErrorCode() == 1062){ // 1062 es un error de dato unico duplicado
+                JOptionPane.showMessageDialog(null, "El nombre ya esta en uso");
                 return false;
+            }
             else {
                 Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error al crear paquete");
                 return false;
             }
         }
@@ -363,6 +368,22 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return espectaculo;
+    }
+    
+    @Override
+    public boolean chequear_si_nombre_de_paquete_esta_repetido(String nompaquete) {
+    Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM paquete as p WHERE  p.nombre=BINARY ?");
+            query.setString(1, nompaquete);
+            ResultSet paquetes_set = query.executeQuery();
+
+            if (paquetes_set.next())
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false; 
     }
     
     @Override

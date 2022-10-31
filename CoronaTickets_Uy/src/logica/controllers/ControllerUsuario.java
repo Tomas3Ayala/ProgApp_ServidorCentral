@@ -8,8 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.clases.Artista;
 import logica.clases.Espectaculo;
+import logica.clases.Paquete;
 import logica.clases.Espectador;
 import logica.clases.Funcion;
 import logica.clases.Usuario;
@@ -503,6 +505,42 @@ public class ControllerUsuario implements InterfaceUsuario{
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return artistas;
+    }
+
+    @Override
+    public boolean paquete_comprado( int idespectador,int  idpaquete) {
+       Connection conn = ConexionDB.getInstance().getConnection();
+       try {
+           PreparedStatement query = conn.prepareStatement("SELECT * FROM compra_paquete WHERE id_espectador = ? and id_paquete = ?");
+           query.setInt(1, idespectador);
+           query.setInt(2, idpaquete);
+           ResultSet set = query.executeQuery();
+           if (set.next())
+               return true;
+            } 
+       catch(SQLException e) {
+          Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);      
+       }
+       return false;
+    }
+
+    @Override
+    public boolean comprar_paquete(int idespectador, int idpaquete) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("INSERT INTO compra_paquete (id_espectador,id_paquete ) VALUES (?,?)");
+            query.setInt(1, idespectador);
+            query.setInt(2, idpaquete);
+            query.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Compra realizada con exito");
+ 
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Compra NO realizada ");
+        return false;
+        }
+        return false;
+        
     }
 
     

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import logica.clases.Artista;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
+import logica.clases.Paquete;
 import logica.clases.Funcion;
 import logica.clases.Usuario;
 
@@ -36,4 +37,7 @@ public interface InterfaceUsuario {
     boolean esta_usuario_registrado_a_funcion(int id_user, int id_func);
 
     public ArrayList<Artista> obtener_artistas_invitados(int id_func);
+    
+    boolean paquete_comprado(int idespectador,int  idpaquete);
+    boolean comprar_paquete(int idespectador,int  idpaquete);
 }

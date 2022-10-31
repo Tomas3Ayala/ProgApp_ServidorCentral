@@ -44,6 +44,7 @@ public interface InterfaceEspectaculo {
     boolean chequear_si_nombre_de_espectaculo_esta_repetido_para_cierta_plataforma(String espectaculo, String plataforma);
 
     boolean chequear_si_nombre_de_funcion_esta_repetido(String nomfuncion);
+    boolean chequear_si_nombre_de_paquete_esta_repetido(String nompaquete);
 
     public boolean existe_id_de_paquete(int id_paquete);
     public boolean existe_id_de_espectaculo(int id_espec);

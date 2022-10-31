@@ -18,6 +18,13 @@ public class Paquete {
         this.descuento = descuento;
         this.id = id;
     }
+     public Paquete(String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int descuento) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_fin = fecha_fin;
+        this.descuento = descuento;
+    }
 
     public String getNombre() {
         return nombre;
