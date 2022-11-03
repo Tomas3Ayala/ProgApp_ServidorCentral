@@ -543,5 +543,118 @@ public class ControllerUsuario implements InterfaceUsuario{
         
     }
 
+    @Override
+    public void seguir_a(String nick1, String nick2) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("INSERT INTO seguido VALUES (?,?)");
+            query.setInt(1, obtener_id_de_usuario(nick1));
+            query.setInt(2, obtener_id_de_usuario(nick2));
+            query.executeUpdate();
+ 
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    @Override
+    public void dejar_de_seguir(String nick1, String nick2) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("DELETE FROM seguido WHERE id_seguidor=? AND id_seguido=?");
+            query.setInt(1, obtener_id_de_usuario(nick1));
+            query.setInt(2, obtener_id_de_usuario(nick2));
+            query.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    @Override
+    public boolean esta_siguiendo_a(String nick1, String nick2) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM seguido WHERE id_seguidor=? AND id_seguido=?");
+            query.setInt(1, obtener_id_de_usuario(nick1));
+            query.setInt(2, obtener_id_de_usuario(nick2));
+            ResultSet set = query.executeQuery();
+            if (set.next())
+                return true;
+ 
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public int obtener_id_de_usuario(String nick) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id FROM usuario WHERE nickname=BINARY ?");
+            query.setString(1, nick);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next())
+                return usuarios_set.getInt("id");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    @Override
+    public String obtener_nick_de_usuario(int id) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT nickname FROM usuario WHERE id=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            if (usuarios_set.next())
+                return usuarios_set.getString("nickname");
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    @Override
+    public ArrayList<String> obtener_nicknames_de_usuarios_que_siguen_a(String nickname) {
+        ArrayList<String> lista = new ArrayList<>();
+        int id = obtener_id_de_usuario(nickname);
+        if (id == -1)
+            return null;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id_seguidor FROM seguido WHERE id_seguido=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            while (usuarios_set.next())
+                lista.add(obtener_nick_de_usuario(usuarios_set.getInt("id_seguidor")));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
+    @Override
+    public ArrayList<String> obtener_nicknames_de_usuarios_a_los_que_sigue(String nickname) {
+        ArrayList<String> lista = new ArrayList<>();
+        int id = obtener_id_de_usuario(nickname);
+        if (id == -1)
+            return null;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT id_seguido FROM seguido WHERE id_seguidor=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            while (usuarios_set.next())
+                lista.add(obtener_nick_de_usuario(usuarios_set.getInt("id_seguido")));
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
     
 }

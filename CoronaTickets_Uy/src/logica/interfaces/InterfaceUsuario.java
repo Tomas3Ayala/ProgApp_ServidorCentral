@@ -40,4 +40,13 @@ public interface InterfaceUsuario {
     
     boolean paquete_comprado(int idespectador,int  idpaquete);
     boolean comprar_paquete(int idespectador,int  idpaquete);
+    
+    void seguir_a(String nick1, String nick2);
+    void dejar_de_seguir(String nick1, String nick2);
+    boolean esta_siguiendo_a(String nick1, String nick2);
+    int obtener_id_de_usuario(String nick);
+    String obtener_nick_de_usuario(int id);
+    
+    ArrayList<String> obtener_nicknames_de_usuarios_que_siguen_a(String nickname);
+    ArrayList<String> obtener_nicknames_de_usuarios_a_los_que_sigue(String nickname);
 }
