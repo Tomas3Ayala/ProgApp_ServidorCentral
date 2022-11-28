@@ -25,6 +25,7 @@ public interface InterfaceUsuario {
     Artista obtener_artista_de_id(int id); // retorna null si el usuario con ese nickname no es artista
     
     ArrayList<String> obtener_nicknames_de_usuarios();
+    ArrayList<Usuario> obtener_usuarios();
     boolean existe_nickname_de_usuario(String nickname);
     boolean existe_correo_de_usuario(String correo);
     String obtener_nickname_de_correo(String correo);

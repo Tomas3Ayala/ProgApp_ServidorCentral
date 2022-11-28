@@ -2,6 +2,8 @@ package Presentacion;
 
 import Persistencia.ConexionDB;
 import java.awt.event.ActionEvent;
+import static java.util.Calendar.PM;
+import java.util.Date;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,6 +41,7 @@ public class Menu extends javax.swing.JFrame {
         menu_inicio = new javax.swing.JMenu();
         salir = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         menu_registros = new javax.swing.JMenu();
         reg_usuario = new javax.swing.JMenuItem();
         editar_perfil_usuario = new javax.swing.JMenuItem();
@@ -91,6 +94,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         menu_inicio.add(jMenuItem4);
+
+        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        menu_inicio.add(jMenuItem5);
 
         jMenuBar1.add(menu_inicio);
 
@@ -331,6 +342,11 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+     Date fecha =  new Date ("Nov 17, 2022 11:14:13 PM");
+        System.out.println(fecha);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -382,6 +398,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenu menu_consultas;
     private javax.swing.JMenu menu_inicio;

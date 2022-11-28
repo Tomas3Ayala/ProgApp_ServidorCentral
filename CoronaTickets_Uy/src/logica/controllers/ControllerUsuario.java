@@ -656,5 +656,28 @@ public class ControllerUsuario implements InterfaceUsuario{
         return lista;
     }
 
+    @Override
+    public ArrayList<Usuario> obtener_usuarios() {
+         ArrayList<Usuario> usuarios = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM `usuario`");
+            
+            ResultSet set = query.executeQuery();
+            while (set.next()) {
+                Artista artista = obtener_artista_de_id(set.getInt("id"));
+                if (artista == null){
+                    Espectador espectador = obtener_espectador_de_nickname(set.getString("nickname"));
+                    usuarios.add(espectador);
+                }
+                else 
+                    usuarios.add(artista);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuarios;
+    }
+
     
 }
