@@ -1,5 +1,6 @@
 package logica.clases;
 
+import java.io.Serializable;
 import java.util.Date;
 import logica.enums.EstadoEspectaculo;
 

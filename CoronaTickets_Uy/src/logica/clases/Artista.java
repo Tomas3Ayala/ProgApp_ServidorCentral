@@ -1,8 +1,9 @@
 package logica.clases;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Artista extends Usuario {
+public class Artista extends Usuario implements Serializable{
     private String descripcion;
     private String biografia;
     private String sitio_web;

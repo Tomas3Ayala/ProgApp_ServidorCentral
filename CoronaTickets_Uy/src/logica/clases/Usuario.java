@@ -1,8 +1,9 @@
 package logica.clases;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Usuario {
+public abstract class Usuario implements Serializable {
     private String nickname;
     private String nombre;
     private String apellido;

@@ -1,8 +1,9 @@
 package logica.clases;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Registro_funcion {
+public class Registro_funcion implements Serializable {
     private Date fecha_registro;
     private int costo;
     private int id_funcion;

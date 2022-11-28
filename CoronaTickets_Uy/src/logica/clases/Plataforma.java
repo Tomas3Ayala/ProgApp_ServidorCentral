@@ -1,6 +1,8 @@
 package logica.clases;
 
-public class Plataforma {
+import java.io.Serializable;
+
+public class Plataforma implements Serializable {
     private String nombre;
     private String descripcion;
     private String url;
