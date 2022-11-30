@@ -74,5 +74,7 @@ public interface InterfaceEspectaculo {
     
     public ArrayList<Paquete> obtener_paquetes_comprados_por_espectador(String nickname);
     
+    public void cargar_datos_de_prueba();
+    
 
 }

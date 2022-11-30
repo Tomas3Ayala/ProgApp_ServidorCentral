@@ -4,6 +4,7 @@ import Persistencia.ConexionDB;
 import java.awt.event.ActionEvent;
 import static java.util.Calendar.PM;
 import java.util.Date;
+import logica.Fabrica;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -95,7 +96,7 @@ public class Menu extends javax.swing.JFrame {
         });
         menu_inicio.add(jMenuItem4);
 
-        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.setText("Cargar datos de prueba");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -343,8 +344,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-     Date fecha =  new Date ("Nov 17, 2022 11:14:13 PM");
+        Date fecha = new Date("Nov 17, 2022 11:14:13 PM");
         System.out.println(fecha);
+        Fabrica.getInstance().getInstanceControladorEspectaculo().cargar_datos_de_prueba();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
