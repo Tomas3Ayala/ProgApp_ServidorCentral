@@ -50,4 +50,7 @@ public interface InterfaceUsuario {
     
     ArrayList<String> obtener_nicknames_de_usuarios_que_siguen_a(String nickname);
     ArrayList<String> obtener_nicknames_de_usuarios_a_los_que_sigue(String nickname);
+    
+    int obtener_cantidad_de_usuarios_que_siguen_a(String nickname);
+    int obtener_cantidad_de_usuarios_a_los_que_sigue(String nickname);
 }

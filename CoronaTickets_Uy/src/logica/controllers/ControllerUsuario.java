@@ -679,5 +679,43 @@ public class ControllerUsuario implements InterfaceUsuario{
         return usuarios;
     }
 
+    @Override
+    public int obtener_cantidad_de_usuarios_que_siguen_a(String nickname) {
+        int cant = 0;
+         int id = obtener_id_de_usuario(nickname);
+        if (id == -1)
+          return cant;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT COUNT(id_seguidor) FROM seguido WHERE id_seguido=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            usuarios_set.next();
+            cant = ((Number) usuarios_set.getObject(1)).intValue();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cant;  
+    }
+
+    @Override
+    public int obtener_cantidad_de_usuarios_a_los_que_sigue(String nickname) {
+        int cant = 0;
+        int id = obtener_id_de_usuario(nickname);
+        if (id == -1)
+            return cant;
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT COUNT(id_seguido) FROM seguido WHERE id_seguidor=?");
+            query.setInt(1, id);
+            ResultSet usuarios_set = query.executeQuery();
+            usuarios_set.next();
+            cant = ((Number) usuarios_set.getObject(1)).intValue();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cant;    
+    }
+
     
 }
