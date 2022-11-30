@@ -1,6 +1,8 @@
 package logica.clases;
 
-public class Paquete_espectaculo {
+import java.io.Serializable;
+
+public class Paquete_espectaculo implements Serializable {
     private int id_espectaculo;
     private int id_paquete;
 

@@ -1,8 +1,9 @@
 package logica.clases;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Paquete {
+public class Paquete implements Serializable {
     private String nombre;
     private String descripcion;
     private Date fecha_inicio;

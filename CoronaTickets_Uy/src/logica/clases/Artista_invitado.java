@@ -1,6 +1,8 @@
 package logica.clases;
 
-public class Artista_invitado {
+import java.io.Serializable;
+
+public class Artista_invitado  implements Serializable{
     private int id_artista;
     private int id_funcion;
 

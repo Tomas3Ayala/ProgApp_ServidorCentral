@@ -10,6 +10,8 @@ import logica.controllers.ControladorEspectaculo;
 import logica.controllers.ControladorPlataforma;
 import logica.controllers.ControllerUsuario;
 import logica.interfaces.InterfaceEspectaculo;
+import logica.interfaces.InterfacePlataforma;
+import logica.interfaces.InterfaceUsuario;
 
 /**
  *
@@ -35,12 +37,12 @@ public class Fabrica {
     	return (InterfaceEspectaculo) ControladorEspectaculo.getInstance();
     }
 
-    public ControladorPlataforma getInstanceControladorPlataforma() {
-    	return ControladorPlataforma.getInstance();
+    public InterfacePlataforma getInstanceControladorPlataforma() {
+    	return (InterfacePlataforma) ControladorPlataforma.getInstance();
     }
     
-    public ControllerUsuario getInstanceControllerUsuario() {
-        return ControllerUsuario.getInstance();
+    public InterfaceUsuario getInstanceControllerUsuario() {
+        return (InterfaceUsuario) ControllerUsuario.getInstance();
     }
 
 }

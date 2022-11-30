@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package logica.interfaces; 
 
 import java.sql.Date;
@@ -14,10 +9,6 @@ import logica.clases.Funcion;
 import logica.clases.Paquete;
 import logica.clases.Plataforma;
 
-/**
- *
- * @author 59892
- */
 public interface InterfacePlataforma {
     boolean crear_Espectaculo(Espectaculo espectaculo, byte[] imagen);
     ArrayList<Artista> obtener_artistas_disponibles();

@@ -10,12 +10,14 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import logica.Fabrica;
 import logica.clases.Artista;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
 import logica.clases.Espectador;
 import logica.clases.Funcion;
 import logica.clases.Paquete;
+import logica.clases.Plataforma;
 import logica.clases.Registro_funcion;
 import logica.enums.EstadoEspectaculo;
 import logica.interfaces.InterfaceEspectaculo;
@@ -839,6 +841,46 @@ Connection conn = ConexionDB.getInstance().getConnection();
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return paquetes;
+    }
+
+    @Override
+    public void cargar_datos_de_prueba() {
+        // eliminando datos
+        // registro de datos
+        String pass = "123";
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("eleven11", "Eleven", "Ten", "eleven11@gmail.com", new Date(1971, 12, 31), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("costas", "Gerardo", "Costas", "gcostas@gmail.com", new Date(1983, 11, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("waston", "Emma", "Watson", "e.watson@gmail.com", new Date(1990, 4, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("house", "Gregory", "House", "greghouse@gmail.com", new Date(1959, 5, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new Date(1950, 01, 28), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new Date(1976, 03, 17), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new Date(1955, 02, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("lachiqui", "Mirtha", "Legrand", "lachiqui@hotmail.com.ar", new Date(1927, 2, 23), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("cbochinche", "Cacho", "Bochinche", "cbochinche@vera.com.uy", new Date(1937, 5, 8), -1, pass), null);
+
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Village People es una innovadora formación musical de estilo disco de finales de los años 70. Fue famosa tanto por sus peculiares disfraces, como por sus canciones pegadizas, con letras sugerentes y llenas de dobles sentidos.","Grupo americano del disco creado por Jacques Morali y Henry Belolo en 1977. Según Marjorie Burgess, todo comenzó cuando Morali fue a un bar gay de Nueva York una noche y notó al bailarín Felipe Rose vestido como un nativo americano.","www.officialvillagepeople.com","vpeople", "Village", "People", "vpeople@tuta.io", new Date(1977, 1, 1), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Depeche Mode es un grupo inglés de música electrónica formado en Basildon, Essex, en 1980 por Vicent Clarke y Andrew John Fletcher, a los que se unieron Martin Lee Gore y poco después David Gahan. Actualmente se le considera como grupo de música alternativa.","NONE","www.depechemode.com","dmode", "Depeche", "Mode", "dmode@tuta.io", new Date(1980, 6, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Cynthia Ann Stephanie Lauper, conocida simplemente como Cyndi Lauper, es una cantautora, actriz y empresaria estadounidense. Después de participar en el grupo musical, Blue Angel, en 1983 firmó con Portrait Records (filial de Epic Records) y lanzó su exitoso álbum debut She's So Unusual a finales de ese mismo año. Siguió lanzando una serie de álbumes en los que encontró una inmensa popularidad, superando los límites de contenido de las letras de sus canciones.","Cynthia Ann Stephanie Lauper, (Brooklyn, Nueva York; 22 de junio de 1953). ","cyndilauper.com","clauper", "Cyndi", "Lauper", "clauper@hotmail.com", new Date(1953, 6, 22), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Bruce Frederick Joseph Springsteen (Long Branch, Nueva Jersey, 23 de septiembre de 1949),​ más conocido como Bruce Springsteen, es un cantante, músico y compositor estadounidense. ","NONE","brucespringsteen.net","bruceTheBoss", "Bruce", "Springsteen", "bruceTheBoss@gmail.com", new Date(1949, 9, 23), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Triple Nelson es un grupo de rock uruguayo formado en enero de 1998 e integrado inicialmente por Christian Cary (guitarra y voz), Fernando \"Paco\" Pintos (bajo y coros) y Rubén Otonello (actualmente su nuevo baterista es Rafael Ugo).","NONE","www.latriplenelson.uy","tripleNelson", "La Triple", "Nelson", "tripleNelson@tuta.io", new Date(1998, 1, 1), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Ley fue una banda chilena de rock formada en 1987 por iniciativa del tecladista y guitarrista. En un principio, La Ley tenía la aspiración de ser un grupo de música tecno. Este disco resulta ser un éxito de ventas y reciben una invitación al Festival Internacional de Viña del Mar de febrero de 1994.","NONE","www.lasleyesdenewton.com","la_ley", "La", "Ley", "la_ley@tuta.io", new Date(1987, 2, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Pimpinela es un dúo musical argentino compuesto por los hermanos Lucía Galán y Joaquín Galán. Pimpinela ha editado veinticuatro discos","NONE","www.pimpinela.net","lospimpi", "Pimpinela", "Pimpinela", "lospimpi@gmail.com", new Date(1981, 8, 13), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("José Gómez Romero, conocido artísticamente como Dyango es un cantante español de música romántica.","NONE","NONE","dyangounchained", "Dyango", "Ango", "dyangounchained@gmail.com", new Date(1940, 3, 5), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Su carrera comienza en 1976 cuando forma la banda Los Playeros junto a su hermano Víctor. Al poco tiempo se mudan a San Luis donde comienzan a hacerse conocidos en la escena musical. Su éxito a nivel nacional llega a comienzos de los años 1990 cuando desembarca en Buenos Aires y graba el éxito \"Violeta\", originalmente compuesta e interpretada en 1985 por el músico brasileño Luiz Caldas bajo el título «Fricote».","NONE","NONE","alcides", "Alcides", "Violeta", "alcides@tuta.io", new Date(1952, 7, 17), -1, pass), null);
+        
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Instagram Live","Funcionalidad de la red social Instagram, con la que los usuarios pueden transmitir vídeos en vivo.","https://www.instagram.com/liveoficial", -1));
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Facebook Watch","Servicio de video bajo demanda operado por Facebook. ","https://www.facebook.com/watch/", -1));
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Twitter Live","Aplicación de Twitter para la transmisión de video en directo (streaming).","https://twitter.com/", -1));
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Youtube","Sitio web de origen estadounidense dedicado a compartir videos. ","https://www.youtube.com/", -1));
+
+//        EstadoEspectaculo.ACEPTADO
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo(, pass, pass, 0, 0, 0, pass, 0, fecha_registro, 0, EstadoEspectaculo.ACEPTADO), null);
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Instagram Live", "Los Village Volvieron", "Espectáculo de retorno de los Village People.", 90, 10 ,  800, "https://www.instagram.com/realvillagepeople/", 550, new Date(20, 03, 31), 1, EstadoEspectaculo.ACEPTADO));
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Facebook Watch", "Global Spirit", "Espectáculo donde se presenta el álbum Spirit.", 120, 30 ,  1300, "https://es-la.facebook.com/depechemode/", 750, new Date(20, 04, 20), 2, EstadoEspectaculo.ACEPTADO));
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Memphis Blues World ", "Espectáculo promoviendo álbum Memphis Blues.", 110, 5 ,  1000, "https://twitter.com/cyndilauper", 800, new Date(20, 05, 30), 3, EstadoEspectaculo.ACEPTADO));
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Youtube", "Springsteen on Broadway", "Springsteen tocando guitarra o piano y relatando anécdotas recogidas en su autobiografía de 2016, Born to Run. ", 100, 100 ,  1500, "https://www.youtube.com/BruceSpringsteen", 980, new Date(20, 06, 07), 4, EstadoEspectaculo.ACEPTADO));
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Bien de Familia", "El dúo estará presentando sus más sonados éxitos y también nuevas canciones . ", 150, 1 0,  500, "https://twitter.com/PimpinelaNet", 500, new Date(20, 07, 08), 7, EstadoEspectaculo.ACEPTADO));
+//        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "30 años", "Espectáculo conmemorando los 30 años de Violeta.", 80, 30 ,  150, "https://twitter.com/alcides_shows", 450, new Date(20, 07, 31), 9, EstadoEspectaculo.ACEPTADO));
     }
 
 }
