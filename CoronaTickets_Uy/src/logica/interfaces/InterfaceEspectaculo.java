@@ -57,6 +57,7 @@ public interface InterfaceEspectaculo {
     public boolean es_funcion_de_espectaculo(int id_func, int id_espec);
     
     public ArrayList<String> obtener_nombres_de_paquetes_asociados_a_espectaculo(int id_espec);
+    public ArrayList<String> obtener_nombres_de_paquetes_asociados_a_espectaculo_y_comprado_por(int id_espec, int id_user);
     
     public Paquete obtener_info_paquete(String nombre);
 
@@ -75,6 +76,8 @@ public interface InterfaceEspectaculo {
     public byte[] obtener_imagen_paquete(String paquete);
     
     public ArrayList<Paquete> obtener_paquetes_comprados_por_espectador(String nickname);
+    
+    void finalizar_espectaculo(int id_espectador);
     
     public void cargar_datos_de_prueba();
     

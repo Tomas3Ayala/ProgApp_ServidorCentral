@@ -1,3 +1,5 @@
+ALTER TABLE corona_ticketsuy.favoritos DROP FOREIGN KEY favoritos_ibfk_1;
+ALTER TABLE corona_ticketsuy.favoritos DROP FOREIGN KEY favoritos_ibfk_2;
 ALTER TABLE corona_ticketsuy.artista DROP FOREIGN KEY artista_ibfk_1;
 ALTER TABLE corona_ticketsuy.artista_invitado DROP FOREIGN KEY artista_invitado_ibfk_1;
 ALTER TABLE corona_ticketsuy.artista_invitado DROP FOREIGN KEY artista_invitado_ibfk_2;
@@ -44,6 +46,8 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE limpiar()
 BEGIN
+ALTER TABLE corona_ticketsuy.favoritos DROP FOREIGN KEY favoritos_ibfk_1;
+ALTER TABLE corona_ticketsuy.favoritos DROP FOREIGN KEY favoritos_ibfk_2;
 ALTER TABLE artista DROP FOREIGN KEY artista_ibfk_1;
 ALTER TABLE artista_invitado DROP FOREIGN KEY artista_invitado_ibfk_1;
 ALTER TABLE artista_invitado DROP FOREIGN KEY artista_invitado_ibfk_2;
@@ -62,6 +66,7 @@ ALTER TABLE registro_funcion DROP FOREIGN KEY registro_funcion_ibfk_2;
 ALTER TABLE seguido DROP FOREIGN KEY seguido_ibfk_1;
 ALTER TABLE seguido DROP FOREIGN KEY seguido_ibfk_2;
 
+DROP TABLE favoritos;
 DROP TABLE artista;
 DROP TABLE artista_invitado;
 DROP TABLE categoria;
@@ -86,9 +91,19 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE repoblar()
 BEGIN
+-- phpMyAdmin SQL Dump
+-- version 5.0.3
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 01-12-2022 a las 04:18:19
+-- Versión del servidor: 10.4.14-MariaDB
+-- Versión de PHP: 7.4.11
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -105,12 +120,10 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `artista`
 --
 
-
-
 CREATE TABLE `artista` (
-  `descripcion` varchar(1400) NOT NULL,
-  `biografia` varchar(1400) NOT NULL,
-  `sitio_web` varchar(1400) NOT NULL,
+  `descripcion` varchar(200) NOT NULL,
+  `biografia` varchar(200) NOT NULL,
+  `sitio_web` varchar(200) NOT NULL,
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -188,6 +201,17 @@ CREATE TABLE `espectaculo` (
 
 CREATE TABLE `espectador` (
   `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favoritos`
+--
+
+CREATE TABLE `favoritos` (
+  `id_espectador` int(11) NOT NULL,
+  `id_espectaculo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -345,6 +369,14 @@ ALTER TABLE `espectador`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `favoritos`
+--
+ALTER TABLE `favoritos`
+  ADD PRIMARY KEY (`id_espectador`,`id_espectaculo`),
+  ADD KEY `id_espectador` (`id_espectador`,`id_espectaculo`),
+  ADD KEY `id_espectaculo` (`id_espectaculo`);
+
+--
 -- Indices de la tabla `funcion`
 --
 ALTER TABLE `funcion`
@@ -386,7 +418,7 @@ ALTER TABLE `registro_funcion`
 --
 ALTER TABLE `seguido`
   ADD PRIMARY KEY (`id_seguido`,`id_seguidor`),
-  ADD UNIQUE KEY `id_seguidor` (`id_seguidor`,`id_seguido`);
+  ADD KEY `id_seguidor` (`id_seguidor`,`id_seguido`) USING BTREE;
 
 --
 -- Indices de la tabla `usuario`
@@ -484,6 +516,13 @@ ALTER TABLE `espectaculo`
 --
 ALTER TABLE `espectador`
   ADD CONSTRAINT `espectador_ibfk_1` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`);
+
+--
+-- Filtros para la tabla `favoritos`
+--
+ALTER TABLE `favoritos`
+  ADD CONSTRAINT `favoritos_ibfk_1` FOREIGN KEY (`id_espectaculo`) REFERENCES `espectaculo` (`id`),
+  ADD CONSTRAINT `favoritos_ibfk_2` FOREIGN KEY (`id_espectador`) REFERENCES `espectador` (`id`);
 
 --
 -- Filtros para la tabla `funcion`

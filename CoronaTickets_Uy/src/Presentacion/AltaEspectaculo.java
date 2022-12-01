@@ -361,12 +361,12 @@ DefaultListModel categorias = new DefaultListModel();
     }
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         String plataforma = combobox_plataformas.getSelectedItem().toString();
-        String categoria = comboCategoria.getSelectedItem().toString();
+//        String categoria = comboCategoria.getSelectedItem().toString();
         String nombre = txtNombre.getText();
-        if (categoria.length() == 0) {
-            JOptionPane.showMessageDialog(this, "Debe especificarse categoria");
-            return;
-        }
+//        if (categoria.length() == 0) {
+//            JOptionPane.showMessageDialog(this, "Debe especificarse categoria");
+//            return;
+//        }
         
         if (nombre.length() == 0) {
             JOptionPane.showMessageDialog(this, "Debe especificarse un nombre para el nuevo espectaculo");

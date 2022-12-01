@@ -656,6 +656,42 @@ Connection conn = ConexionDB.getInstance().getConnection();
     }
 
     @Override
+    public ArrayList<String> obtener_nombres_de_paquetes_asociados_a_espectaculo_y_comprado_por(int id_espec, int id_user) {
+        ArrayList<String> paquetesf = new ArrayList<>();
+
+        ArrayList<String> paquetes_espectaculo = obtener_nombres_de_paquetes_asociados_a_espectaculo(id_espec);
+        ArrayList<String> paquetes_comprados = new ArrayList<>();
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM compra_paquete, paquete WHERE compra_paquete.id_espectador=? AND compra_paquete.id_paquete=paquete.id AND paquete.fecha_fin > NOW()");
+            query.setInt(1, id_user);
+            ResultSet paquetes_set = query.executeQuery();
+            while (paquetes_set.next()) {
+                paquetes_comprados.add(paquetes_set.getString("paquete.nombre"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println("paquetes_espectaculo");
+        for (String paquete : paquetes_espectaculo) {
+            boolean a = false;
+            System.out.println(paquete);
+            for (String paquete2 : paquetes_comprados) {
+                System.out.println("\t" + paquete2);
+                if (paquete.equals(paquete2)) {
+                    a = true;
+                    break;
+                }
+            }
+            if (a)
+                paquetesf.add(paquete);
+        }
+
+        return paquetesf;
+    }
+    
+    @Override
     public Paquete obtener_info_paquete(String nombre) {
          Paquete paquete = null;
         Connection conn = ConexionDB.getInstance().getConnection();
@@ -853,6 +889,18 @@ Connection conn = ConexionDB.getInstance().getConnection();
         }
         return paquetes;
     }
+    
+    @Override
+    public void finalizar_espectaculo(int id_espectador) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("UPDATE espectaculo SET estado = 'FINALIZADO' WHERE espectaculo.id = ?");
+            query.setInt(1, id_espectador);
+            query.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void cargar_datos_de_prueba() {
@@ -875,26 +923,26 @@ Connection conn = ConexionDB.getInstance().getConnection();
         // registro de datos
         String pass = "123";
         // Espectadores
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("eleven11", "Eleven", "Ten", "eleven11@gmail.com", new Date(1971, 12, 31), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("costas", "Gerardo", "Costas", "gcostas@gmail.com", new Date(1983, 11, 15), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("waston", "Emma", "Watson", "e.watson@gmail.com", new Date(1990, 4, 15), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("house", "Gregory", "House", "greghouse@gmail.com", new Date(1959, 5, 15), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new Date(1950, 1, 28), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new Date(1976, 3, 17), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new Date(1955, 2, 14), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("lachiqui", "Mirtha", "Legrand", "lachiqui@hotmail.com.ar", new Date(1927, 2, 23), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("cbochinche", "Cacho", "Bochinche", "cbochinche@vera.com.uy", new Date(1937, 5, 8), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("eleven11", "Eleven", "Ten", "eleven11@gmail.com", new Date(1971 - 1900, 12, 31), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("costas", "Gerardo", "Costas", "gcostas@gmail.com", new Date(1983 - 1900, 11, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("waston", "Emma", "Watson", "e.watson@gmail.com", new Date(1990 - 1900, 4, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("house", "Gregory", "House", "greghouse@gmail.com", new Date(1959 - 1900, 5, 15), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("sergiop", "Sergio", "Puglia", "puglia@alpanpan.com.uy", new Date(1950 - 1900, 1, 28), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("chino", "Alvaro", "Recoba", "chino@trico.org.uy", new Date(1976 - 1900, 3, 17), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("tonyp", "Antonio", "Pacheco", "eltony@manya.org.uy", new Date(1955 - 1900, 2, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("lachiqui", "Mirtha", "Legrand", "lachiqui@hotmail.com.ar", new Date(1927 - 1900, 2, 23), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_espectador(new Espectador("cbochinche", "Cacho", "Bochinche", "cbochinche@vera.com.uy", new Date(1937 - 1900, 5, 8), -1, pass), null);
 
         // Artistas
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Village People es una innovadora formación musical de estilo disco de finales de los años 70. Fue famosa tanto por sus peculiares disfraces, como por sus canciones pegadizas, con letras sugerentes y llenas de dobles sentidos.","Grupo americano del disco creado por Jacques Morali y Henry Belolo en 1977. Según Marjorie Burgess, todo comenzó cuando Morali fue a un bar gay de Nueva York una noche y notó al bailarín Felipe Rose vestido como un nativo americano.","www.officialvillagepeople.com","vpeople", "Village", "People", "vpeople@tuta.io", new Date(1977, 1, 1), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Depeche Mode es un grupo inglés de música electrónica formado en Basildon, Essex, en 1980 por Vicent Clarke y Andrew John Fletcher, a los que se unieron Martin Lee Gore y poco después David Gahan. Actualmente se le considera como grupo de música alternativa.","","www.depechemode.com","dmode", "Depeche", "Mode", "dmode@tuta.io", new Date(1980, 6, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Village People es una innovadora formación musical de estilo disco de finales de los años 70. Fue famosa tanto por sus peculiares disfraces, como por sus canciones pegadizas, con letras sugerentes y llenas de dobles sentidos.","Grupo americano del disco creado por Jacques Morali y Henry Belolo en 1977. Según Marjorie Burgess, todo comenzó cuando Morali fue a un bar gay de Nueva York una noche y notó al bailarín Felipe Rose vestido como un nativo americano.","www.officialvillagepeople.com","vpeople", "Village", "People", "vpeople@tuta.io", new Date(1977 - 1900, 1, 1), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Depeche Mode es un grupo inglés de música electrónica formado en Basildon, Essex, en 1980 por Vicent Clarke y Andrew John Fletcher, a los que se unieron Martin Lee Gore y poco después David Gahan. Actualmente se le considera como grupo de música alternativa.","","www.depechemode.com","dmode", "Depeche", "Mode", "dmode@tuta.io", new Date(1980 - 1900, 6, 14), -1, pass), null);
         Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Cynthia Ann Stephanie Lauper, conocida simplemente como Cyndi Lauper, es una cantautora, actriz y empresaria estadounidense. Después de participar en el grupo musical, Blue Angel, en 1983 firmó con Portrait Records (filial de Epic Records) y lanzó su exitoso álbum debut She's So Unusual a finales de ese mismo año. Siguió lanzando una serie de álbumes en los que encontró una inmensa popularidad, superando los límites de contenido de las letras de sus canciones.","Cynthia Ann Stephanie Lauper, (Brooklyn, Nueva York; 22 de junio de 1953). ","cyndilauper.com","clauper", "Cyndi", "Lauper", "clauper@hotmail.com", new Date(1953, 6, 22), -1, pass), null);
         Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Bruce Frederick Joseph Springsteen (Long Branch, Nueva Jersey, 23 de septiembre de 1949),​ más conocido como Bruce Springsteen, es un cantante, músico y compositor estadounidense. ","","brucespringsteen.net","bruceTheBoss", "Bruce", "Springsteen", "bruceTheBoss@gmail.com", new Date(1949, 9, 23), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Triple Nelson es un grupo de rock uruguayo formado en enero de 1998 e integrado inicialmente por Christian Cary (guitarra y voz), Fernando \"Paco\" Pintos (bajo y coros) y Rubén Otonello (actualmente su nuevo baterista es Rafael Ugo).","","www.latriplenelson.uy","tripleNelson", "La Triple", "Nelson", "tripleNelson@tuta.io", new Date(1998, 1, 1), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Ley fue una banda chilena de rock formada en 1987 por iniciativa del tecladista y guitarrista. En un principio, La Ley tenía la aspiración de ser un grupo de música tecno. Este disco resulta ser un éxito de ventas y reciben una invitación al Festival Internacional de Viña del Mar de febrero de 1994.","","www.lasleyesdenewton.com","la_ley", "La", "Ley", "la_ley@tuta.io", new Date(1987, 2, 14), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Pimpinela es un dúo musical argentino compuesto por los hermanos Lucía Galán y Joaquín Galán. Pimpinela ha editado veinticuatro discos","","www.pimpinela.net","lospimpi", "Pimpinela", "Pimpinela", "lospimpi@gmail.com", new Date(1981, 8, 13), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Triple Nelson es un grupo de rock uruguayo formado en enero de 1998 e integrado inicialmente por Christian Cary (guitarra y voz), Fernando \"Paco\" Pintos (bajo y coros) y Rubén Otonello (actualmente su nuevo baterista es Rafael Ugo).","","www.latriplenelson.uy","tripleNelson", "La Triple", "Nelson", "tripleNelson@tuta.io", new Date(1998 - 1900, 1, 1), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("La Ley fue una banda chilena de rock formada en 1987 por iniciativa del tecladista y guitarrista. En un principio, La Ley tenía la aspiración de ser un grupo de música tecno. Este disco resulta ser un éxito de ventas y reciben una invitación al Festival Internacional de Viña del Mar de febrero de 1994.","","www.lasleyesdenewton.com","la_ley", "La", "Ley", "la_ley@tuta.io", new Date(1987 - 1900, 2, 14), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Pimpinela es un dúo musical argentino compuesto por los hermanos Lucía Galán y Joaquín Galán. Pimpinela ha editado veinticuatro discos","","www.pimpinela.net","lospimpi", "Pimpinela", "Pimpinela", "lospimpi@gmail.com", new Date(1981 - 1900, 8, 13), -1, pass), null);
         Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("José Gómez Romero, conocido artísticamente como Dyango es un cantante español de música romántica.","","","dyangounchained", "Dyango", "Ango", "dyangounchained@gmail.com", new Date(1940, 3, 5), -1, pass), null);
-        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Su carrera comienza en 1976 cuando forma la banda Los Playeros junto a su hermano Víctor. Al poco tiempo se mudan a San Luis donde comienzan a hacerse conocidos en la escena musical. Su éxito a nivel nacional llega a comienzos de los años 1990 cuando desembarca en Buenos Aires y graba el éxito \"Violeta\", originalmente compuesta e interpretada en 1985 por el músico brasileño Luiz Caldas bajo el título «Fricote».","","","alcides", "Alcides", "Violeta", "alcides@tuta.io", new Date(1952, 7, 17), -1, pass), null);
+        Fabrica.getInstance().getInstanceControllerUsuario().registrar_artista(new Artista("Su carrera comienza en 1976 cuando forma la banda Los Playeros junto a su hermano Víctor. Al poco tiempo se mudan a San Luis donde comienzan a hacerse conocidos en la escena musical. Su éxito a nivel nacional llega a comienzos de los años 1990 cuando desembarca en Buenos Aires y graba el éxito \"Violeta\", originalmente compuesta e interpretada en 1985 por el músico brasileño Luiz Caldas bajo el título «Fricote».","","","alcides", "Alcides", "Violeta", "alcides@tuta.io", new Date(1952 - 1900, 7, 17), -1, pass), null);
         
         // Plataformas
         Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Instagram Live","Funcionalidad de la red social Instagram, con la que los usuarios pueden transmitir vídeos en vivo.","https://www.instagram.com/liveoficial", -1));
@@ -903,119 +951,119 @@ Connection conn = ConexionDB.getInstance().getConnection();
         Fabrica.getInstance().getInstanceControladorPlataforma().Alta_Plataforma(new Plataforma("Youtube","Sitio web de origen estadounidense dedicado a compartir videos. ","https://www.youtube.com/", -1));
 
         // Espectaculos
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Instagram Live", "Los Village Volvieron", "Espectáculo de retorno de los Village People.", 90, 10 ,  800, "https://www.instagram.com/realvillagepeople/", 550, new Date(2020, 3, 31), 10, EstadoEspectaculo.ACEPTADO), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Facebook Watch", "Global Spirit", "Espectáculo donde se presenta el álbum Spirit.", 120, 30 ,  1300, "https://es-la.facebook.com/depechemode/", 750, new Date(2020, 4, 20), 11, EstadoEspectaculo.ACEPTADO), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Memphis Blues World ", "Espectáculo promoviendo álbum Memphis Blues.", 110, 5 ,  1000, "https://twitter.com/cyndilauper", 800, new Date(2020, 5, 30), 12, EstadoEspectaculo.ACEPTADO), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Youtube", "Springsteen on Broadway", "Springsteen tocando guitarra o piano y relatando anécdotas recogidas en su autobiografía de 2016, Born to Run. ", 100, 100 ,  1500, "https://www.youtube.com/BruceSpringsteen", 980, new Date(2020, 6, 7), 13, EstadoEspectaculo.ACEPTADO), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Bien de Familia", "El dúo estará presentando sus más sonados éxitos y también nuevas canciones . ", 150, 10,  500, "https://twitter.com/PimpinelaNet", 500, new Date(2020, 7, 8), 16, EstadoEspectaculo.ACEPTADO), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "30 años", "Espectáculo conmemorando los 30 años de Violeta.", 80, 30 ,  150, "https://twitter.com/alcides_shows", 450, new Date(2020, 7, 31), 18, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Instagram Live", "Los Village Volvieron", "Espectáculo de retorno de los Village People.", 90, 10 ,  800, "https://www.instagram.com/realvillagepeople/", 550, new Date(2020 - 1900, 3, 31), 10, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Facebook Watch", "Global Spirit", "Espectáculo donde se presenta el álbum Spirit.", 120, 30 ,  1300, "https://es-la.facebook.com/depechemode/", 750, new Date(2020 - 1900, 4, 20), 11, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Memphis Blues World", "Espectáculo promoviendo álbum Memphis Blues.", 110, 5 ,  1000, "https://twitter.com/cyndilauper", 800, new Date(2020 - 1900, 5, 30), 12, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Youtube", "Springsteen on Broadway", "Springsteen tocando guitarra o piano y relatando anécdotas recogidas en su autobiografía de 2016, Born to Run. ", 100, 100 ,  1500, "https://www.youtube.com/BruceSpringsteen", 980, new Date(2020 - 1900, 6, 7), 13, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "Bien de Familia", "El dúo estará presentando sus más sonados éxitos y también nuevas canciones . ", 150, 10,  500, "https://twitter.com/PimpinelaNet", 500, new Date(2020 - 1900, 7, 8), 16, EstadoEspectaculo.ACEPTADO), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().crear_Espectaculo(new Espectaculo("Twitter Live", "30 años", "Espectáculo conmemorando los 30 años de Violeta.", 80, 30 ,  150, "https://twitter.com/alcides_shows", 450, new Date(2020 - 1900, 7, 31), 18, EstadoEspectaculo.ACEPTADO), null);
         
         // Funciones
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 1", new Date(2020, 4, 15), 15, new Date(2020, 3, 31), -1, 1), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 1", new Date(2020 - 1900, 4, 15), 15, new Date(2020 - 1900, 3, 31), -1, 1), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(11, 1);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(12, 1);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 2", new Date(2020, 5, 1), 17, new Date(2020, 3, 31), -1, 1), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 2", new Date(2020 - 1900, 5, 1), 17, new Date(2020 - 1900, 3, 31), -1, 1), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 2);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 3", new Date(2020, 6, 1), 18, new Date(2020, 3, 31), -1, 1), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Los Village Volvieron - 3", new Date(2020 - 1900, 6, 1), 18, new Date(2020 - 1900, 3, 31), -1, 1), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 3);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(12, 3);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (I)", new Date(2020, 6, 10), 19, new Date(2020, 4, 20), -1, 2), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (I)", new Date(2020 - 1900, 6, 10), 19, new Date(2020 - 1900, 4, 20), -1, 2), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(10, 4);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (II)", new Date(2020, 7, 10), 20, new Date(2020, 4, 20), -1, 2), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (II)", new Date(2020 - 1900, 7, 10), 20, new Date(2020 - 1900, 4, 20), -1, 2), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(12, 5);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 5);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (III)", new Date(2020, 8, 10), 17, new Date(2020, 4, 20), -1, 2), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Global Spirit (III)", new Date(2020 - 1900, 8, 10), 17, new Date(2020 - 1900, 4, 20), -1, 2), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(16, 6);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - A", new Date(2020, 8, 15), 16, new Date(2020, 5, 30), -1, 3), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - A", new Date(2020 - 1900, 8, 15), 16, new Date(2020 - 1900, 5, 30), -1, 3), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 7);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - B", new Date(2020, 8, 31), 19, new Date(2020, 5, 30), -1, 3), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - B", new Date(2020 - 1900, 8, 31), 19, new Date(2020 - 1900, 5, 30), -1, 3), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 8);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(11, 8);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - C", new Date(2020, 9, 30), 20, new Date(2020, 5, 30), -1, 3), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Memphis Blues World - C", new Date(2020 - 1900, 9, 30), 20, new Date(2020 - 1900, 5, 30), -1, 3), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(16, 9);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(13, 9);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - i", new Date(2020, 9, 1), 19, new Date(2020, 6, 7), -1, 4), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - i", new Date(2020 - 1900, 9, 1), 19, new Date(2020 - 1900, 6, 7), -1, 4), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(11, 10);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(14, 10);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - ii", new Date(2020, 9, 30), 17, new Date(2020, 6, 7), -1, 4), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - ii", new Date(2020 - 1900, 9, 30), 17, new Date(2020 - 1900, 6, 7), -1, 4), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(14, 11);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(15, 11);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - iii", new Date(2020, 10, 15), 20, new Date(2020, 6, 7), -1, 4), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Springsteen on Broadway - iii", new Date(2020 - 1900, 10, 15), 20, new Date(2020 - 1900, 6, 7), -1, 4), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(15, 12);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - A", new Date(2020, 9, 25), 19, new Date(2020, 7, 8), -1, 5), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - A", new Date(2020 - 1900, 9, 25), 19, new Date(2020 - 1900, 7, 8), -1, 5), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(18, 13);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - B", new Date(2020, 10, 25), 18, new Date(2020, 7, 8), -1, 5), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - B", new Date(2020 - 1900, 10, 25), 18, new Date(2020 - 1900, 7, 8), -1, 5), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(14, 14);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - C", new Date(2020, 11, 25), 17, new Date(2020, 7, 8), -1, 5), null);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("30 años - 1", new Date(2020, 9, 1), 21, new Date(2020, 7, 31), -1, 6), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("Bien de Familia - C", new Date(2020 - 1900, 11, 25), 17, new Date(2020 - 1900, 7, 8), -1, 5), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("30 años - 1", new Date(2020 - 1900, 9, 1), 21, new Date(2020 - 1900, 7, 31), -1, 6), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(17, 16);
-        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("30 años - 2", new Date(2020, 10, 1), 21, new Date(2020, 7, 31), -1, 6), null);
+        Fabrica.getInstance().getInstanceControladorPlataforma().Alta_de_Funcion(new Funcion("30 años - 2", new Date(2020 - 1900, 10, 1), 21, new Date(2020 - 1900, 7, 31), -1, 6), null);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(16, 17);
         Fabrica.getInstance().getInstanceControladorPlataforma().insertar_Artista_Invitado(17, 17);
         
         // Registros a funciones
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 1, 550, new Date(2020, 4, 9));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 1, 550, new Date(2020, 4, 10));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 1, 550, new Date(2020, 4, 12));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 2, 550, new Date(2020, 4, 15));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 2, 550, new Date(2020, 4, 20));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 2, 550, new Date(2020, 4, 25));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 2, 550, new Date(2020, 4, 28));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 3, 550, new Date(2020, 4, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 3, 550, new Date(2020, 5, 15));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 3, 550, new Date(2020, 5, 20));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 4, 750, new Date(2020, 5, 5));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 4, 750, new Date(2020, 5, 10));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 4, 750, new Date(2020, 5, 15));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 4, 750, new Date(2020, 5, 20));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 5, 750, new Date(2020, 6, 8));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 5, 750, new Date(2020, 6, 13));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 5, 750, new Date(2020, 6, 25));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 6, 750, new Date(2020, 7, 5));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 6, 750, new Date(2020, 7, 11));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 6, 750, new Date(2020, 7, 18));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 7, 0, new Date(2020, 7, 19));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 1, 550, new Date(2020 - 1900, 4, 9));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 1, 550, new Date(2020 - 1900, 4, 10));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 1, 550, new Date(2020 - 1900, 4, 12));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 2, 550, new Date(2020 - 1900, 4, 15));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 2, 550, new Date(2020 - 1900, 4, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 2, 550, new Date(2020 - 1900, 4, 25));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 2, 550, new Date(2020 - 1900, 4, 28));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 3, 550, new Date(2020 - 1900, 4, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 3, 550, new Date(2020 - 1900, 5, 15));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 3, 550, new Date(2020 - 1900, 5, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 4, 750, new Date(2020 - 1900, 5, 5));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 4, 750, new Date(2020 - 1900, 5, 10));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 4, 750, new Date(2020 - 1900, 5, 15));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 4, 750, new Date(2020 - 1900, 5, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 5, 750, new Date(2020 - 1900, 6, 8));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 5, 750, new Date(2020 - 1900, 6, 13));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 5, 750, new Date(2020 - 1900, 6, 25));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 6, 750, new Date(2020 - 1900, 7, 5));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 6, 750, new Date(2020 - 1900, 7, 11));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 6, 750, new Date(2020 - 1900, 7, 18));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 7, 0, new Date(2020 - 1900, 7, 19));
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(2, 8);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(3, 8);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(5, 8);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 8, 800, new Date(2020, 8, 17));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 8, 800, new Date(2020, 8, 20));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 8, 800, new Date(2020, 8, 23));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 9, 0, new Date(2020, 8, 15));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 8, 800, new Date(2020 - 1900, 8, 17));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 8, 800, new Date(2020 - 1900, 8, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 8, 800, new Date(2020 - 1900, 8, 23));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 9, 0, new Date(2020 - 1900, 8, 15));
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(1, 2);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(2, 2);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(3, 2);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 9, 800, new Date(2020, 8, 26));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 10, 0, new Date(2020, 7, 19));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 9, 800, new Date(2020 - 1900, 8, 26));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 10, 0, new Date(2020 - 1900, 7, 19));
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(1, 6);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(2, 6);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(6, 6);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 10, 980, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 10, 980, new Date(2020, 8, 24));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 11, 0, new Date(2020, 8, 1));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 10, 980, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(8, 10, 980, new Date(2020 - 1900, 8, 24));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 11, 0, new Date(2020 - 1900, 8, 1));
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(1, 5);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(4, 5);
         Fabrica.getInstance().getInstanceControladorEspectaculo().canjear_registro(6, 5);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 11, 980, new Date(2020, 8, 30));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 12, 980, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 12, 980, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 12, 980, new Date(2020, 9, 1));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 12, 980, new Date(2020, 9, 5));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 13, 500, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 13, 500, new Date(2020, 9, 3));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 14, 500, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 14, 500, new Date(2020, 9, 6));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 15, 500, new Date(2020, 9, 1));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 16, 450, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 16, 450, new Date(2020, 8, 20));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 16, 450, new Date(2020, 8, 31));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 17, 450, new Date(2020, 8, 16));
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 17, 450, new Date(2020, 8, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 11, 980, new Date(2020 - 1900, 8, 30));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 12, 980, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 12, 980, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(3, 12, 980, new Date(2020 - 1900, 9, 1));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 12, 980, new Date(2020 - 1900, 9, 5));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(4, 13, 500, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 13, 500, new Date(2020 - 1900, 9, 3));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 14, 500, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(9, 14, 500, new Date(2020 - 1900, 9, 6));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(2, 15, 500, new Date(2020 - 1900, 9, 1));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(5, 16, 450, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(1, 16, 450, new Date(2020 - 1900, 8, 20));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 16, 450, new Date(2020 - 1900, 8, 31));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(6, 17, 450, new Date(2020 - 1900, 8, 16));
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_espectador_en_funcion_de_espectaculo_con_fecha(7, 17, 450, new Date(2020 - 1900, 8, 20));
         
         // Paquetes de espectaculos
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete de Bandas", "Paquete de bandas musicales.", new Date(2020, 5, 1), new Date(2020, 7, 31), 20, -1), null);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete Solistas", "Paquete de solistas.", new Date(2020, 8, 1), new Date(2020, 9, 30), 30, -1), null);
-        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete Latino", "Paquete de espectáculos latinos.", new Date(2020, 8, 15), new Date(2020, 11, 15), 15, -1), null);
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete de Bandas", "Paquete de bandas musicales.", new Date(2020 - 1900, 5, 1), new Date(2020 - 1900, 7, 31), 20, -1), null);
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete Solistas", "Paquete de solistas.", new Date(2020 - 1900, 8, 1), new Date(2020 - 1900, 9, 30), 30, -1), null);
+        Fabrica.getInstance().getInstanceControladorEspectaculo().registrar_paquete(new Paquete("Paquete Latino", "Paquete de espectáculos latinos.", new Date(2020 - 1900, 8, 15), new Date(2020 - 1900, 11, 15), 15, -1), null);
         
         // Espectáculos que integran los paquetes
         Fabrica.getInstance().getInstanceControladorPlataforma().Agregar_espectaculo_a_paquete(1, "Paquete de Bandas");

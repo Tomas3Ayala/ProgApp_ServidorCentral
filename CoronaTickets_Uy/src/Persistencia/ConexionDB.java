@@ -58,7 +58,7 @@ public class ConexionDB {
             try {
                 com.mysql.cj.jdbc.Driver driver = new com.mysql.cj.jdbc.Driver();
                 DriverManager.registerDriver(driver);
-                conexion = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+db, user, pass);
+                conexion = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+db+"?useUnicode=true&characterEncoding=utf-8", user, pass);
             } catch (SQLException ex) {
                 Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
             }

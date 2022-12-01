@@ -53,6 +53,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
          
         try {
             PreparedStatement query = conn.prepareStatement("INSERT INTO `espectaculo` (`nombre`, `descripcion`, `duracion`, `min_espectador`,`max_espectador`,`url`,`costo`,`fecha_registro`,`id_artista`, `id_plataforma`, `estado`, `imagen`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            System.out.println("Nombre: " + espectaculo.getNombre());
             query.setString(1, espectaculo.getNombre());
             query.setString(2, espectaculo.getDescripcion());
             query.setInt(3, espectaculo.getDuracion());
