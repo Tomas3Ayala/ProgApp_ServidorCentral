@@ -536,11 +536,11 @@ public class ControllerUsuario implements InterfaceUsuario{
             query.setInt(1, idespectador);
             query.setInt(2, idpaquete);
             query.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Compra realizada con exito");
+//            JOptionPane.showMessageDialog(null, "Compra realizada con exito");
  
         } catch (SQLException e) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Compra NO realizada ");
+//            JOptionPane.showMessageDialog(null, "Compra NO realizada ");
         return false;
         }
         return false;

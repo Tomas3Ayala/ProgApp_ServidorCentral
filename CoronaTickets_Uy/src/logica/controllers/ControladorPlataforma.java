@@ -444,7 +444,7 @@ public class ControladorPlataforma implements InterfacePlataforma {
          
          query.executeUpdate();
 
-         JOptionPane.showMessageDialog(null, "Se agrego el espectaculo '" + nombreEspectaculo + "' al paquete '" + nomPaquete + "' ");
+//         JOptionPane.showMessageDialog(null, "Se agrego el espectaculo '" + nombreEspectaculo + "' al paquete '" + nomPaquete + "' ");
 
      } catch (SQLException ex) {
          Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);

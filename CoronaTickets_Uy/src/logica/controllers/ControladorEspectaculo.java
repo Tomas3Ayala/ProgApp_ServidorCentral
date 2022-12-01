@@ -357,15 +357,15 @@ public class ControladorEspectaculo implements InterfaceEspectaculo{
             query.setInt(5, paquete.getDescuento());
             query.setBytes(6, imagen);
             query.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Paquete creado con exito");
+//            JOptionPane.showMessageDialog(null, "Paquete creado con exito");
         } catch (SQLException ex) {
             if (ex.getErrorCode() == 1062){ // 1062 es un error de dato unico duplicado
-                JOptionPane.showMessageDialog(null, "El nombre ya esta en uso");
+//                JOptionPane.showMessageDialog(null, "El nombre ya esta en uso");
                 return false;
             }
             else {
                 Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Error al crear paquete");
+//                JOptionPane.showMessageDialog(null, "Error al crear paquete");
                 return false;
             }
         }
