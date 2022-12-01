@@ -10,5 +10,5 @@ package logica.enums;
  * @author 59892
  */
 public enum EstadoEspectaculo {
-   INGRESADO, ACEPTADO, RECHAZADO;
+   INGRESADO, ACEPTADO, RECHAZADO, FINALIZADO;
 }

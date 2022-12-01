@@ -344,9 +344,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        Date fecha = new Date("Nov 17, 2022 11:14:13 PM");
-        System.out.println(fecha);
+        System.out.println("cargando datos...");
         Fabrica.getInstance().getInstanceControladorEspectaculo().cargar_datos_de_prueba();
+        System.out.println("datos cargados!");
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**

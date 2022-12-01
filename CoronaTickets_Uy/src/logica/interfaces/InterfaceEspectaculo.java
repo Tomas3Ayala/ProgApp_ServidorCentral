@@ -1,6 +1,7 @@
 package logica.interfaces;
 
 import java.util.ArrayList;
+import java.util.Date;
 import logica.clases.Artista;
 import logica.clases.Categoria;
 import logica.clases.Espectaculo;
@@ -34,6 +35,7 @@ public interface InterfaceEspectaculo {
     Float obtener_costo_final_de_registro(int id_espectador, int id_espectaculo);
     
     void registrar_espectador_en_funcion_de_espectaculo(int id_espectador, int id_funcion, int costo);
+    void registrar_espectador_en_funcion_de_espectaculo_con_fecha(int id_espectador, int id_funcion, int costo, Date fecha_registro);
     ArrayList<Funcion> obtener_funciones_de_espectaculo_no_llenas(int id);
     ArrayList<Espectador> obtener_espectadores_no_registrados_en_funcion(int id_funcion);
     void canjear_registro(int id_funcion, int id_espectador);
