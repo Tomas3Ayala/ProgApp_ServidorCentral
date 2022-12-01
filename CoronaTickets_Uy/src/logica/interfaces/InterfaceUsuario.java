@@ -44,7 +44,10 @@ public interface InterfaceUsuario {
     
     void seguir_a(String nick1, String nick2);
     void dejar_de_seguir(String nick1, String nick2);
+    void marcar_favorito(String nick, int id_espectaculo);
+    void desmarcar_favorito(String nick, int id_espectaculo);
     boolean esta_siguiendo_a(String nick1, String nick2);
+    boolean tiene_favorito_a(String nick1, int id_espectaculo);
     int obtener_id_de_usuario(String nick);
     String obtener_nick_de_usuario(int id);
     

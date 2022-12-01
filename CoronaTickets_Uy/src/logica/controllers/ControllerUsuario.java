@@ -233,17 +233,21 @@ public class ControllerUsuario implements InterfaceUsuario{
             PreparedStatement query = conn.prepareStatement("SELECT * FROM usuario as u WHERE u.nickname=BINARY ?");
             query.setString(1, nickname);
             ResultSet usuarios_set = query.executeQuery();
-            usuarios_set.next();
-            espectador = new Espectador(
-                usuarios_set.getString("nickname"),
-                usuarios_set.getString("nombre"),
-                usuarios_set.getString("apellido"),
-                usuarios_set.getString("correo"),
-                usuarios_set.getDate("nacimiento"),
-                usuarios_set.getInt("id"),
-                usuarios_set.getString("contrasenia")
-            );
-        } catch (SQLException ex) {
+            if (usuarios_set.next()) {
+                espectador = new Espectador(
+                        usuarios_set.getString("nickname"),
+                        usuarios_set.getString("nombre"),
+                        usuarios_set.getString("apellido"),
+                        usuarios_set.getString("correo"),
+                        usuarios_set.getDate("nacimiento"),
+                        usuarios_set.getInt("id"),
+                        usuarios_set.getString("contrasenia")
+                );
+            } else {
+                return null;
+            }
+        }
+            catch (SQLException ex) {
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return espectador;
@@ -569,6 +573,51 @@ public class ControllerUsuario implements InterfaceUsuario{
             Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    @Override
+    public void marcar_favorito(String nick, int id_espectaculo) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("INSERT INTO favoritos VALUES (?,?)");
+            query.setInt(1, obtener_id_de_usuario(nick));
+            query.setInt(2, id_espectaculo);
+            query.executeUpdate();
+ 
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+        }  
+    }
+
+    @Override
+    public void desmarcar_favorito(String nick, int id_espectaculo) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("DELETE FROM favoritos WHERE id_espectador=? AND id_espectaculo=?");
+            query.setInt(1, obtener_id_de_usuario(nick));
+            query.setInt(2, id_espectaculo);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+        }   
+    }
+    
+    @Override
+    public boolean tiene_favorito_a(String nick1, int id_espectaculo) {
+        Connection conn = ConexionDB.getInstance().getConnection();
+        try {
+            PreparedStatement query = conn.prepareStatement("SELECT * FROM favoritos WHERE id_espectador=? AND id_espectaculo=?");
+            query.setInt(1, obtener_id_de_usuario(nick1));
+            query.setInt(2, id_espectaculo);
+            ResultSet set = query.executeQuery();
+            if (set.next())
+                return true;
+ 
+        } catch (SQLException e) {
+            Logger.getLogger(ControladorEspectaculo.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+        return false;    }
+    
 
     @Override
     public boolean esta_siguiendo_a(String nick1, String nick2) {
@@ -716,6 +765,5 @@ public class ControllerUsuario implements InterfaceUsuario{
         }
         return cant;    
     }
-
     
 }
